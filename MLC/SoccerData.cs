@@ -24,18 +24,18 @@ namespace MLC
             HalfTimeHomeTeamGoals = 7,
             HalfTimeAwayTeamGoals = 8,
             HalfTimeResult = 9,
-            homeTeamShots = 10,              
-            awayTeamShots = 11,
-            homeTeamShotsOnTarget = 12,
-            awayTeamShotsOnTarget = 13,
-            homeTeamFoulsCommitted = 14,
-            awayTeamFoulsCommitted = 15,
-            homeTeamCorners = 16,
-            awayTeamCorners = 17,
-            homeTeamYellowCards = 18,
-            awayTeamYellowCards = 19,
-            homeTeamRedCards = 20,
-            awayTeamRedCards = 21
+            HomeTeamShots = 10,              
+            AwayTeamShots = 11,
+            HomeTeamShotsOnTarget = 12,
+            AwayTeamShotsOnTarget = 13,
+            HomeTeamFoulsCommitted = 14,
+            AwayTeamFoulsCommitted = 15,
+            HomeTeamCorners = 16,
+            AwayTeamCorners = 17,
+            HomeTeamYellowCards = 18,
+            AwayTeamYellowCards = 19,
+            HomeTeamRedCards = 20,
+            AwayTeamRedCards = 21
         }
 
         //HomeTeam,AwayTeam,FTHomeTeamGoals,FTAwayTeamGoals,HomeTimeHomeTeamGoals,HalfTimeAwayTeamGoals,HalfTimeTResult,HomeTeamShots,AwayTeamShots,HomeTeamShotsonTarget,AwayTeamShotsonTarget,HomeTeamFoulsCommitted,AwayTeamFoulsCommitted,HomeTeamCorners,AwayTeamCorners,HometeamYellowCards,AwayTeamYellowCards,HomeTeamRedCards,AwayTeamRedCards,FTResult

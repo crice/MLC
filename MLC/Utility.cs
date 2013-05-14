@@ -33,24 +33,24 @@ namespace MLC
                         soccerData.Date = split[(int)SoccerData.SoccerDataPosition.Date];
                         soccerData.HomeTeam = split[(int)SoccerData.SoccerDataPosition.HomeTeam];
                         soccerData.AwayTeam = split[(int)SoccerData.SoccerDataPosition.AwayTeam];
-                        soccerData.FullTimeHomeTeamGoals = split[4];
-                        soccerData.FullTimeAwayTeamGoals = split[5];
-                        soccerData.FullTimeResult = split[6];
-                        soccerData.HalfTimeHomeTeamGoals = split[7];
-                        soccerData.HalfTimeAwayTeamGoals = split[8];
-                        soccerData.HalfTimeResult = split[9];
-                        soccerData.HomeTeamShots = split[10];
-                        soccerData.AwayTeamShots = split[11];
-                        soccerData.HomeTeamShotsOnTarget = split[12];
-                        soccerData.AwayTeamShotsOnTarget = split[13];
-                        soccerData.HomeTeamFoulsCommitted = split[14];
-                        soccerData.AwayTeamFoulsCommitted = split[15];
-                        soccerData.HomeTeamCorners = split[16];
-                        soccerData.AwayTeamCorners = split[17];
-                        soccerData.HomeTeamYellowCards = split[18];
-                        soccerData.AwayTeamYellowCards = split[19];
-                        soccerData.HomeTeamRedCards = split[20];
-                        soccerData.AwayTeamRedCards = split[21];
+                        soccerData.FullTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPosition.FullTimeHomeTeamGoals];
+                        soccerData.FullTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPosition.FullTimeAwayTeamGoals];
+                        soccerData.FullTimeResult = split[(int)SoccerData.SoccerDataPosition.FullTimeResult];
+                        soccerData.HalfTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPosition.HalfTimeHomeTeamGoals];
+                        soccerData.HalfTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPosition.HalfTimeAwayTeamGoals];
+                        soccerData.HalfTimeResult = split[(int)SoccerData.SoccerDataPosition.HalfTimeResult];
+                        soccerData.HomeTeamShots = split[(int)SoccerData.SoccerDataPosition.HomeTeamShots];
+                        soccerData.AwayTeamShots = split[(int)SoccerData.SoccerDataPosition.AwayTeamShots];
+                        soccerData.HomeTeamShotsOnTarget = split[(int)SoccerData.SoccerDataPosition.HomeTeamShotsOnTarget];
+                        soccerData.AwayTeamShotsOnTarget = split[(int)SoccerData.SoccerDataPosition.AwayTeamShotsOnTarget];
+                        soccerData.HomeTeamFoulsCommitted = split[(int)SoccerData.SoccerDataPosition.HomeTeamFoulsCommitted];
+                        soccerData.AwayTeamFoulsCommitted = split[(int)SoccerData.SoccerDataPosition.AwayTeamFoulsCommitted];
+                        soccerData.HomeTeamCorners = split[(int)SoccerData.SoccerDataPosition.HomeTeamCorners];
+                        soccerData.AwayTeamCorners = split[(int)SoccerData.SoccerDataPosition.AwayTeamCorners];
+                        soccerData.HomeTeamYellowCards = split[(int)SoccerData.SoccerDataPosition.HomeTeamYellowCards];
+                        soccerData.AwayTeamYellowCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamYellowCards];
+                        soccerData.HomeTeamRedCards = split[(int)SoccerData.SoccerDataPosition.HomeTeamRedCards];
+                        soccerData.AwayTeamRedCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamRedCards];
                         soccerDataList.Add(soccerData);
                     }
                 }
@@ -74,7 +74,7 @@ namespace MLC
             string newHomeTeam = string.Empty;
             string newAwayTeam = string.Empty;
 
-            //Extact all unique game fixtures like: Arsenal-Sunderland
+            //Extact all unique game fixtures like: Arsenal-Sunderland (also remove any spaces like Man United -> ManUnited)
             foreach (SoccerData sd in soccerDataList)
             {
                 if (sd.HomeTeam.Contains(SPACE))
