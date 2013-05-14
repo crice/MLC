@@ -52,6 +52,25 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MJlibsvm163\Cache.cs" />
+    <Compile Include="MJlibsvm163\GaussianTransform.cs" />
+    <Compile Include="MJlibsvm163\IRangeTransform.cs" />
+    <Compile Include="MJlibsvm163\Kernel.cs" />
+    <Compile Include="MJlibsvm163\Model.cs" />
+    <Compile Include="MJlibsvm163\Node.cs" />
+    <Compile Include="MJlibsvm163\Parameter.cs" />
+    <Compile Include="MJlibsvm163\ParameterSelection.cs" />
+    <Compile Include="MJlibsvm163\PerformanceEvaluator.cs" />
+    <Compile Include="MJlibsvm163\PrecomputedKernel.cs" />
+    <Compile Include="MJlibsvm163\Prediction.cs" />
+    <Compile Include="MJlibsvm163\Problem.cs" />
+    <Compile Include="MJlibsvm163\RangeTransform.cs" />
+    <Compile Include="MJlibsvm163\Scaling.cs" />
+    <Compile Include="MJlibsvm163\Solver.cs" />
+    <Compile Include="MJlibsvm163\SupportClass.cs" />
+    <Compile Include="MJlibsvm163\SVMExtensions.cs" />
+    <Compile Include="MJlibsvm163\TemporaryCulture.cs" />
+    <Compile Include="MJlibsvm163\Training.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoccerData.cs" />
@@ -78,6 +97,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
