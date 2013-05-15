@@ -12,7 +12,18 @@ namespace MLC
         private const string HYPHEN = "-";
         private const string SPACE = " ";
         private const string NOTHING = "";
+        private const string HASH = "#";
         private const int HEADER_INDEX = 0;
+
+
+        private enum SoccerDataResults
+        {
+            D = 1,  //Draw
+            H = 2,  //Home win
+            A = 3   //Away win
+        }
+
+
 
         public static List<SoccerData> ReadSoccerDataFromFile(string fileName)
         {
@@ -164,6 +175,105 @@ namespace MLC
 
         }
 
+
+        public static void WriteOutSoccerDataToLibsvmFormat(List<SoccerData> soccerDataList, string outFileName)
+        {
+            soccerDataList.RemoveAt(HEADER_INDEX);  
+
+            System.IO.StreamWriter outFile = new System.IO.StreamWriter(outFileName);
+
+            List<string> teamGames = new List<string>();
+            string newHomeTeam = string.Empty;
+            string newAwayTeam = string.Empty;
+
+            //Extact all unique game fixtures like: Arsenal-Sunderland (also remove any spaces like Man United -> ManUnited)
+            foreach (SoccerData sd in soccerDataList)
+            {
+                if (sd.HomeTeam.Contains(SPACE))
+                    newHomeTeam = sd.HomeTeam.Replace(SPACE, NOTHING);
+                else
+                    newHomeTeam = sd.HomeTeam;
+
+                if (sd.AwayTeam.Contains(SPACE))
+                    newAwayTeam = sd.AwayTeam.Replace(SPACE, NOTHING);
+                else
+                    newAwayTeam = sd.AwayTeam;
+
+                string fixture = newHomeTeam + HYPHEN + newAwayTeam;
+                if (!teamGames.Contains(fixture))
+                {
+                    teamGames.Add(fixture);
+                }
+            }
+
+            List<string> sortedTeamGames = teamGames.OrderBy(mc => mc, StringComparer.CurrentCultureIgnoreCase).ToList();   
+
+            foreach (SoccerData soccerData in soccerDataList)
+            {
+                //Convert the result letter to a consistent number
+                string fullTimeResultNumber = ConvertFullTimeResultToConsistentNumber(soccerData.FullTimeResult);
+                outFile.Write(fullTimeResultNumber + SPACE);
+
+                string fixture = soccerData.HomeTeam.Replace(SPACE, NOTHING) + HYPHEN + soccerData.AwayTeam.Replace(SPACE, NOTHING);
+                string fixtureNumber = AnnexHomeTeamAndAwayTeamAndReturnIndexNumber(sortedTeamGames, soccerData);
+
+                outFile.Write("1:" + fixtureNumber + SPACE);                
+                outFile.Write("2:" +soccerData.FullTimeHomeTeamGoals + SPACE);
+                outFile.Write("3:" +soccerData.FullTimeAwayTeamGoals + SPACE);
+                outFile.Write("4:" +soccerData.HalfTimeHomeTeamGoals + SPACE);
+                outFile.Write("5:" +soccerData.HalfTimeAwayTeamGoals + SPACE);
+
+                //file.Write(soccerData.HalfTimeResult + SPACE);
+                outFile.Write("6:" +soccerData.HomeTeamShots + SPACE);
+                outFile.Write("7:" +soccerData.AwayTeamShots + SPACE);
+
+                outFile.Write("8:" +soccerData.HomeTeamShotsOnTarget + SPACE);
+                outFile.Write("9:" +soccerData.AwayTeamShotsOnTarget + SPACE);
+
+                outFile.Write("10:" +soccerData.HomeTeamFoulsCommitted + SPACE);
+                outFile.Write("11:" +soccerData.AwayTeamFoulsCommitted + SPACE);
+
+                outFile.Write("12:" +soccerData.HomeTeamCorners + SPACE);
+                outFile.Write("13:" +soccerData.AwayTeamCorners + SPACE);
+
+                outFile.Write("14:" +soccerData.HomeTeamYellowCards + SPACE);
+                outFile.Write("15:" +soccerData.AwayTeamYellowCards + SPACE);
+
+                outFile.Write("16:" +soccerData.HomeTeamRedCards + SPACE);
+                outFile.Write("17:" +soccerData.AwayTeamRedCards + SPACE);
+                outFile.WriteLine("# " + fixture + " (" +sortedTeamGames.IndexOf(fixture).ToString() +")");                    
+            }
+
+            outFile.Close();
+
+        }
+
+
+        public static string ConvertFullTimeResultToConsistentNumber(string fullTimeResult)
+        {
+            if (fullTimeResult.Equals(SoccerDataResults.D.ToString()))
+                return SoccerDataResults.D.ToString();
+            else if (fullTimeResult.Equals(SoccerDataResults.H.ToString()))
+                return SoccerDataResults.D.ToString();
+            else if (fullTimeResult.Equals(SoccerDataResults.A.ToString()))
+                return SoccerDataResults.D.ToString();
+            else
+                return "ERROR";
+
+        }
+
+        public static string AnnexHomeTeamAndAwayTeamAndReturnIndexNumber(List<string> sortedTeamGames, SoccerData soccerData)
+        {
+            string homeTeamAwayTeam = soccerData.HomeTeam.Replace(SPACE, NOTHING) + HYPHEN + soccerData.AwayTeam.Replace(SPACE, NOTHING);
+
+            string fixtureNumber = "";
+            if (sortedTeamGames.Contains(homeTeamAwayTeam))
+                fixtureNumber = sortedTeamGames.IndexOf(homeTeamAwayTeam).ToString(); 
+            else
+                fixtureNumber = "-1";
+
+            return fixtureNumber;
+        }
 
     }
 }

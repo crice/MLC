@@ -36,6 +36,16 @@ namespace MLC
 
                     richTextBox1.Text = "Text output to C:\\"; 
                 }
+                else if (checkBox2.Checked == true)
+                {
+                    string outFileName = this.textBox5.Text; 
+                    string fileName = openFileDialog.FileName;
+                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
+                    Utility.WriteOutSoccerDataToLibsvmFormat(soccerData, outFileName);
+
+                    richTextBox1.Text = "Text output to C:\\" + outFileName; 
+                }
+
             }
         }
 
@@ -44,12 +54,22 @@ namespace MLC
             button1.Enabled = true;
         }
 
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = true;
+        }
+
 
         //SVM - M. Johnson
         private void button2_Click(object sender, EventArgs e)
         {
-            Problem train = Problem.Read(@"C:\\libsvm\\diabetes.train");
-            Problem test = Problem.Read(@"C:\\libsvm\\diabetes.test");
+            string trainingDataLocation = this.textBox1.Text;
+            string testDataLocation = this.textBox2.Text;
+            string paramsFileLocation = this.textBox3.Text;
+            string resultsFileLocation = this.textBox4.Text; 
+
+            Problem train = Problem.Read(@trainingDataLocation);
+            Problem test = Problem.Read(@testDataLocation);
 
             //For this example (and indeed, many scenarios), the default
             //parameters will suffice.
@@ -61,22 +81,24 @@ namespace MLC
             //This will do a grid optimization to find the best parameters
             //and store them in C and Gamma, outputting the entire
             //search to params.txt.
-
-            ParameterSelection.Grid(train, parameters, @"C:\\libsvm\\params.txt", out C, out Gamma);
+            this.richTextBox2.Text = "Begin parameter selection...\n"; 
+            ParameterSelection.Grid(train, parameters, @paramsFileLocation, out C, out Gamma);            
             parameters.C = C;
             parameters.Gamma = Gamma;
 
 
             //Train the model using the optimal parameters.
-
+            this.richTextBox2.AppendText("Begin training...");
             Model model = Training.Train(train, parameters);
 
 
             //Perform classification on the test data, putting the
             //results in results.txt.
-
-            Prediction.Predict(test, @"C:\\libsvm\\results.txt", model, false);
+            this.richTextBox2.AppendText("Begin prediction...");
+            Prediction.Predict(test, @resultsFileLocation, model, false);
         }
+
+
 
 
     }
