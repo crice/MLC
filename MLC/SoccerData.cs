@@ -38,7 +38,35 @@ namespace MLC
             AwayTeamRedCards = 21
         }
 
+        public enum SoccerDataPositionPre2012WithReferee
+        {
+            Division = 0,
+            Date = 1,
+            HomeTeam = 2,
+            AwayTeam = 3,
+            FullTimeHomeTeamGoals = 4,
+            FullTimeAwayTeamGoals = 5,
+            FullTimeResult = 6,
+            HalfTimeHomeTeamGoals = 7,
+            HalfTimeAwayTeamGoals = 8,
+            HalfTimeResult = 9,
+            Referee = 10,
+            HomeTeamShots = 11,
+            AwayTeamShots = 12,
+            HomeTeamShotsOnTarget = 13,
+            AwayTeamShotsOnTarget = 14,
+            HomeTeamFoulsCommitted = 15,
+            AwayTeamFoulsCommitted = 16,
+            HomeTeamCorners = 17,
+            AwayTeamCorners = 18,
+            HomeTeamYellowCards = 19,
+            AwayTeamYellowCards = 20,
+            HomeTeamRedCards = 21,
+            AwayTeamRedCards = 22
+        }
+
         //HomeTeam,AwayTeam,FTHomeTeamGoals,FTAwayTeamGoals,HomeTimeHomeTeamGoals,HalfTimeAwayTeamGoals,HalfTimeTResult,HomeTeamShots,AwayTeamShots,HomeTeamShotsonTarget,AwayTeamShotsonTarget,HomeTeamFoulsCommitted,AwayTeamFoulsCommitted,HomeTeamCorners,AwayTeamCorners,HometeamYellowCards,AwayTeamYellowCards,HomeTeamRedCards,AwayTeamRedCards,FTResult
+        //Div,Date,HomeTeam,AwayTeam,FTHG,FTAG,FTR,HTHG,HTAG,HTR,Referee,HS,AS,HST,AST,HF,AF,HC,AC,HY,AY,HR,AR
 
         private string _division;                   //Div
         private string _date;                       //Date
@@ -50,6 +78,7 @@ namespace MLC
         private string _halfTimeHomeTeamGoals;      //HTHG
         private string _halfTimeAwayTeamGoals;      //HTAG
         private string _halfTimeResult;             //HTR
+        private string _referee;                    //Referee  <-- only present in pre-2012 seasons
         private string _homeTeamShots;              //HS
         private string _awayTeamShots;              //AS
         private string _homeTeamShotsOnTarget;      //HST
@@ -132,7 +161,13 @@ namespace MLC
             get { return _halfTimeResult; }
             set { _halfTimeResult = value; }
         }
-        
+
+
+        public string Referee
+        {
+            get { return _referee; }
+            set { _referee = value; }
+        }
 
         public string HomeTeamShots
         {

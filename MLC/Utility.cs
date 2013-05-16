@@ -75,8 +75,60 @@ namespace MLC
             return soccerDataList;
         }
 
+        public static List<SoccerData> ReadSoccerDataFromFilePre2012WithReferee(string fileName)
+        {
+            List<SoccerData> soccerDataList = new List<SoccerData>();
+            SoccerData soccerData = null;
+            string line = string.Empty;
 
-        public static void WriteOutSoccerDataToArffFormat(List<SoccerData> soccerDataList)
+            try
+            {
+                using (StreamReader sr = new StreamReader(fileName))
+                {
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        string[] split = line.Split(new char[] { COMMA });
+                        soccerData = new SoccerData();
+
+                        soccerData.Division = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.Division];
+                        soccerData.Date = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.Date];
+                        soccerData.HomeTeam = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeam];
+                        soccerData.AwayTeam = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeam];
+                        soccerData.FullTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.FullTimeHomeTeamGoals];
+                        soccerData.FullTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.FullTimeAwayTeamGoals];
+                        soccerData.FullTimeResult = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.FullTimeResult];
+                        soccerData.HalfTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HalfTimeHomeTeamGoals];
+                        soccerData.HalfTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HalfTimeAwayTeamGoals];
+                        soccerData.HalfTimeResult = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HalfTimeResult];
+                        soccerData.Referee = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HalfTimeResult];
+                        soccerData.HomeTeamShots = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeamShots];
+                        soccerData.AwayTeamShots = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeamShots];
+                        soccerData.HomeTeamShotsOnTarget = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeamShotsOnTarget];
+                        soccerData.AwayTeamShotsOnTarget = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeamShotsOnTarget];
+                        soccerData.HomeTeamFoulsCommitted = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeamFoulsCommitted];
+                        soccerData.AwayTeamFoulsCommitted = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeamFoulsCommitted];
+                        soccerData.HomeTeamCorners = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeamCorners];
+                        soccerData.AwayTeamCorners = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeamCorners];
+                        soccerData.HomeTeamYellowCards = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeamYellowCards];
+                        soccerData.AwayTeamYellowCards = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeamYellowCards];
+                        soccerData.HomeTeamRedCards = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeamRedCards];
+                        soccerData.AwayTeamRedCards = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeamRedCards];
+                        soccerDataList.Add(soccerData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(ex.Message);
+            }
+
+            return soccerDataList;
+
+        }
+
+
+        public static void WriteOutSoccerDataToArffFormat(List<SoccerData> soccerDataList, string outFileName)
         {
             soccerDataList.RemoveAt(HEADER_INDEX);  
 
@@ -88,15 +140,22 @@ namespace MLC
             //Extact all unique game fixtures like: Arsenal-Sunderland (also remove any spaces like Man United -> ManUnited)
             foreach (SoccerData sd in soccerDataList)
             {
+
                 if (sd.HomeTeam.Contains(SPACE))
                     newHomeTeam = sd.HomeTeam.Replace(SPACE, NOTHING);
                 else
                     newHomeTeam = sd.HomeTeam;
 
+                if (newHomeTeam.Equals("Nott'mForest"))
+                    newHomeTeam = "NottinghamForest";
+
                 if (sd.AwayTeam.Contains(SPACE))
                     newAwayTeam = sd.AwayTeam.Replace(SPACE, NOTHING);
                 else
-                    newAwayTeam = sd.AwayTeam; 
+                    newAwayTeam = sd.AwayTeam;
+
+                if (newAwayTeam.Equals("Nott'mForest"))
+                    newAwayTeam = "NottinghamForest";
 
                 string fixture = newHomeTeam + HYPHEN + newAwayTeam; 
                 if (!teamGames.Contains(fixture))
@@ -108,9 +167,9 @@ namespace MLC
 
             //Remove comma at end & add the brackets
             allTeamGames = allTeamGames.TrimEnd(new char[] { COMMA });   
-            allTeamGames = "{ " + allTeamGames + " }"; 
+            allTeamGames = "{ " + allTeamGames + " }";
 
-            System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\FACup2013.arff");
+            System.IO.StreamWriter file = new System.IO.StreamWriter(outFileName);
 
             file.WriteLine("% 1. Title: FA Cup Data 2013 Season\n");
             file.WriteLine("% 2. Source: http://www.football-data.co.uk/data.php");
@@ -144,7 +203,12 @@ namespace MLC
 
             foreach (SoccerData soccerData in soccerDataList)
             {
-                file.Write(soccerData.HomeTeam.Replace(SPACE, NOTHING) + HYPHEN + soccerData.AwayTeam.Replace(SPACE, NOTHING) + COMMA);
+                string fixture = soccerData.HomeTeam.Replace(SPACE, NOTHING) + HYPHEN + soccerData.AwayTeam.Replace(SPACE, NOTHING) + COMMA;
+
+                if (fixture.Contains("Nott'mForest"))
+                    fixture = fixture.Replace("Nott'mForest", "NottinghamForest");
+
+                file.Write(fixture + SPACE);
                 file.Write(soccerData.FullTimeHomeTeamGoals + COMMA);
                 file.Write(soccerData.FullTimeAwayTeamGoals + COMMA);
                 file.Write(soccerData.HalfTimeHomeTeamGoals + COMMA);

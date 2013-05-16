@@ -52,6 +52,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -92,7 +93,7 @@
             this.groupBox5.Controls.Add(this.textBox5);
             this.groupBox5.Location = new System.Drawing.Point(14, 155);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(200, 79);
+            this.groupBox5.Size = new System.Drawing.Size(221, 79);
             this.groupBox5.TabIndex = 3;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Output Filename";
@@ -109,17 +110,18 @@
             // 
             this.richTextBox1.Location = new System.Drawing.Point(14, 278);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(200, 96);
+            this.richTextBox1.Size = new System.Drawing.Size(221, 96);
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox3);
             this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Location = new System.Drawing.Point(14, 36);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 100);
+            this.groupBox1.Size = new System.Drawing.Size(221, 100);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "From/To Formats";
@@ -127,7 +129,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(7, 44);
+            this.checkBox2.Location = new System.Drawing.Point(6, 66);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(160, 17);
             this.checkBox2.TabIndex = 1;
@@ -140,9 +142,9 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(7, 20);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(146, 17);
+            this.checkBox1.Size = new System.Drawing.Size(196, 17);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "Soccer data to arff format";
+            this.checkBox1.Text = "Soccer data (2012/13) to arff format";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -151,7 +153,7 @@
             this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(14, 7);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 23);
+            this.button1.Size = new System.Drawing.Size(221, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Convert";
             this.button1.UseVisualStyleBackColor = true;
@@ -302,6 +304,17 @@
             this.tabPage3.Text = "C4.5";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(6, 43);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(204, 17);
+            this.checkBox3.TabIndex = 2;
+            this.checkBox3.Text = "Soccer data (PRE 2012) to arff format";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -352,6 +365,7 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }
 

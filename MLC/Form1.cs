@@ -28,22 +28,31 @@ namespace MLC
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                string outFileName = this.textBox5.Text; 
+
                 if (checkBox1.Checked == true)
                 {
                     string fileName = openFileDialog.FileName;
                     List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
-                    Utility.WriteOutSoccerDataToArffFormat(soccerData);
+                    Utility.WriteOutSoccerDataToArffFormat(soccerData, outFileName);
+
+                    richTextBox1.Text = "Text output to C:\\"; 
+                }
+                else if (checkBox3.Checked == true)
+                {
+                    string fileName = openFileDialog.FileName;
+                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFilePre2012WithReferee(fileName);
+                    Utility.WriteOutSoccerDataToArffFormat(soccerData, outFileName);
 
                     richTextBox1.Text = "Text output to C:\\"; 
                 }
                 else if (checkBox2.Checked == true)
                 {
-                    string outFileName = this.textBox5.Text; 
                     string fileName = openFileDialog.FileName;
                     List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
                     Utility.WriteOutSoccerDataToLibsvmFormat(soccerData, outFileName);
 
-                    richTextBox1.Text = "Text output to C:\\" + outFileName; 
+                    richTextBox1.Text = "Text output to C:\\" + outFileName;
                 }
 
             }
@@ -55,6 +64,11 @@ namespace MLC
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = true;
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
             button1.Enabled = true;
         }
@@ -97,6 +111,8 @@ namespace MLC
             this.richTextBox2.AppendText("Begin prediction...");
             Prediction.Predict(test, @resultsFileLocation, model, false);
         }
+
+
 
 
 
