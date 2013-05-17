@@ -34,7 +34,7 @@ namespace MLC
                 {
                     string fileName = openFileDialog.FileName;
                     List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
-                    Utility.WriteOutSoccerDataToArffFormat(soccerData, outFileName);
+                    Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT(soccerData, outFileName);
 
                     richTextBox1.Text = "Text output to C:\\"; 
                 }

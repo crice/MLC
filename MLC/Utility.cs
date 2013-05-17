@@ -240,6 +240,133 @@ namespace MLC
         }
 
 
+        public static void WriteOutSoccerDataToArffFormat_SIMPLEFORMAT(List<SoccerData> soccerDataList, string outFileName)
+        {
+            soccerDataList.RemoveAt(HEADER_INDEX);
+
+            List<string> homeTeams = new List<string>();
+            List<string> awayTeams = new List<string>();
+            string allHomeTeams = string.Empty;
+            string allAwayTeams = string.Empty;
+            string newHomeTeam = string.Empty;
+            string newAwayTeam = string.Empty;
+
+            //Extact all unique game fixtures like: Arsenal-Sunderland (also remove any spaces like Man United -> ManUnited)
+            foreach (SoccerData sd in soccerDataList)
+            {
+
+                if (sd.HomeTeam.Contains(SPACE))
+                    newHomeTeam = sd.HomeTeam.Replace(SPACE, NOTHING);
+                else
+                    newHomeTeam = sd.HomeTeam;
+
+                if (newHomeTeam.Equals("Nott'mForest"))
+                    newHomeTeam = "NottinghamForest";
+
+                if (!homeTeams.Contains(newHomeTeam))
+                {
+                    homeTeams.Add(newHomeTeam);
+                    allHomeTeams += newHomeTeam + ",";
+                }
+
+                if (sd.AwayTeam.Contains(SPACE))
+                    newAwayTeam = sd.AwayTeam.Replace(SPACE, NOTHING);
+                else
+                    newAwayTeam = sd.AwayTeam;
+
+                if (newAwayTeam.Equals("Nott'mForest"))
+                    newAwayTeam = "NottinghamForest";
+
+                if (!awayTeams.Contains(newAwayTeam))
+                {
+                    awayTeams.Add(newAwayTeam);
+                    allAwayTeams += newAwayTeam + ",";
+                }
+
+            }
+
+            //Remove comma at end & add the brackets
+            allHomeTeams = allHomeTeams.TrimEnd(new char[] { COMMA });
+            allHomeTeams = "{ " + allHomeTeams + " }";
+            allAwayTeams = allAwayTeams.TrimEnd(new char[] { COMMA });
+            allAwayTeams = "{ " + allAwayTeams + " }";
+
+            System.IO.StreamWriter file = new System.IO.StreamWriter(outFileName);
+
+            file.WriteLine("% 1. Title: Premiership Data 2013 Season\n");
+            file.WriteLine("% 2. Source: http://www.football-data.co.uk/data.php");
+            file.WriteLine("\n\n");
+            file.WriteLine("@relation Premiership2013");
+
+            file.WriteLine("@attribute \'HomeTeam\' " + allHomeTeams);
+            file.WriteLine("@attribute \'AwayTeam\' " + allAwayTeams); 
+            file.WriteLine("@attribute \'FullTimeHomeTeamGoals\' numeric");
+            file.WriteLine("@attribute \'FullTimeAwayTeamGoals\' numeric");
+            file.WriteLine("@attribute \'HalfTimeHomeTeamGoals\' numeric");
+            file.WriteLine("@attribute \'HalfTimeAwayTeamGoals\' numeric");
+            //file.WriteLine("@attribute \'HalfTimeResult\' numeric");
+            file.WriteLine("@attribute \'HomeTeamShots\' numeric");
+            file.WriteLine("@attribute \'AwayTeamShots\' numeric");
+            file.WriteLine("@attribute \'HomeTeamShotsOnTarget\' numeric");
+            file.WriteLine("@attribute \'AwayTeamShotsOnTarget\' numeric");
+
+            file.WriteLine("@attribute \'HomeTeamFoulsCommitted\' numeric");
+            file.WriteLine("@attribute \'AwayTeamFoulsCommitted\' numeric");
+
+            file.WriteLine("@attribute \'HomeTeamCorners\' numeric");
+            file.WriteLine("@attribute \'AwayTeamCorners\' numeric");
+
+            file.WriteLine("@attribute \'HomeTeamYellowCards\' numeric");
+            file.WriteLine("@attribute \'AwayTeamYellowCards\' numeric");
+
+            file.WriteLine("@attribute \'HomeTeamRedCards\' numeric");
+            file.WriteLine("@attribute \'AwayTeamRedCards\' numeric");
+            file.WriteLine("@attribute \'class\' { D,H,A }");
+            file.WriteLine("@data");
+
+            foreach (SoccerData soccerData in soccerDataList)
+            {
+                string homeTeam = soccerData.HomeTeam.Replace(SPACE, NOTHING);
+                string awayTeam = soccerData.AwayTeam.Replace(SPACE, NOTHING);
+
+                if (homeTeam.Contains("Nott'mForest"))
+                    homeTeam = homeTeam.Replace("Nott'mForest", "NottinghamForest");
+                if (awayTeam.Contains("Nott'mForest"))
+                    awayTeam = awayTeam.Replace("Nott'mForest", "NottinghamForest");
+
+                file.Write(homeTeam + COMMA);
+                file.Write(awayTeam + COMMA);
+                file.Write(soccerData.FullTimeHomeTeamGoals + COMMA);
+                file.Write(soccerData.FullTimeAwayTeamGoals + COMMA);
+                file.Write(soccerData.HalfTimeHomeTeamGoals + COMMA);
+                file.Write(soccerData.HalfTimeAwayTeamGoals + COMMA);
+
+                //file.Write(soccerData.HalfTimeResult + COMMA);
+                file.Write(soccerData.HomeTeamShots + COMMA);
+                file.Write(soccerData.AwayTeamShots + COMMA);
+
+                file.Write(soccerData.HomeTeamShotsOnTarget + COMMA);
+                file.Write(soccerData.AwayTeamShotsOnTarget + COMMA);
+
+                file.Write(soccerData.HomeTeamFoulsCommitted + COMMA);
+                file.Write(soccerData.AwayTeamFoulsCommitted + COMMA);
+
+                file.Write(soccerData.HomeTeamCorners + COMMA);
+                file.Write(soccerData.AwayTeamCorners + COMMA);
+
+                file.Write(soccerData.HomeTeamYellowCards + COMMA);
+                file.Write(soccerData.AwayTeamYellowCards + COMMA);
+
+                file.Write(soccerData.HomeTeamRedCards + COMMA);
+                file.Write(soccerData.AwayTeamRedCards + COMMA);
+                file.WriteLine(soccerData.FullTimeResult);
+            }
+
+            file.Close();
+
+        }
+
+
         public static void WriteOutSoccerDataToLibsvmFormat(List<SoccerData> soccerDataList, string outFileName)
         {
             soccerDataList.RemoveAt(HEADER_INDEX);  
