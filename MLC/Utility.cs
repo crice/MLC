@@ -431,8 +431,8 @@ namespace MLC
                 outFile.Write("15:" +soccerData.AwayTeamYellowCards + SPACE);
 
                 outFile.Write("16:" +soccerData.HomeTeamRedCards + SPACE);
-                outFile.Write("17:" +soccerData.AwayTeamRedCards + SPACE);
-                outFile.WriteLine("# " + fixture + " (" +sortedTeamGames.IndexOf(fixture).ToString() +")");                    
+                outFile.WriteLine("17:" +soccerData.AwayTeamRedCards + SPACE);
+                //outFile.WriteLine("# " + fixture + " (" +sortedTeamGames.IndexOf(fixture).ToString() +")");                    
             }
 
             outFile.Close();
@@ -443,11 +443,11 @@ namespace MLC
         public static string ConvertFullTimeResultToConsistentNumber(string fullTimeResult)
         {
             if (fullTimeResult.Equals(SoccerDataResults.D.ToString()))
-                return SoccerDataResults.D.ToString();
+                return "1";
             else if (fullTimeResult.Equals(SoccerDataResults.H.ToString()))
-                return SoccerDataResults.D.ToString();
+                return "2";
             else if (fullTimeResult.Equals(SoccerDataResults.A.ToString()))
-                return SoccerDataResults.D.ToString();
+                return "3";
             else
                 return "ERROR";
 
