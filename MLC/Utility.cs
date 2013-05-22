@@ -62,6 +62,12 @@ namespace MLC
                         soccerData.AwayTeamYellowCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamYellowCards];
                         soccerData.HomeTeamRedCards = split[(int)SoccerData.SoccerDataPosition.HomeTeamRedCards];
                         soccerData.AwayTeamRedCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamRedCards];
+
+                        //Betting
+                        soccerData.Bet365HomeWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365HomeWinOdds];
+                        soccerData.Bet365DrawOdds = split[(int)SoccerData.SoccerDataPosition.Bet365DrawOdds];
+                        soccerData.Bet365AwayWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365AwayWinOdds];  
+
                         soccerDataList.Add(soccerData);
                     }
                 }
@@ -321,6 +327,11 @@ namespace MLC
 
             file.WriteLine("@attribute \'HomeTeamRedCards\' numeric");
             file.WriteLine("@attribute \'AwayTeamRedCards\' numeric");
+
+            file.WriteLine("@attribute \'Bet365HomeWinOdds\' numeric");
+            file.WriteLine("@attribute \'Bet365DrawOdds\' numeric");
+            file.WriteLine("@attribute \'Bet365AwayWinOdds\' numeric"); 
+
             file.WriteLine("@attribute \'class\' { D,H,A }");
             file.WriteLine("@data");
 
@@ -359,6 +370,12 @@ namespace MLC
 
                 file.Write(soccerData.HomeTeamRedCards + COMMA);
                 file.Write(soccerData.AwayTeamRedCards + COMMA);
+
+                //Betting
+                file.Write(soccerData.Bet365HomeWinOdds + COMMA);
+                file.Write(soccerData.Bet365DrawOdds + COMMA);
+                file.Write(soccerData.Bet365AwayWinOdds + COMMA);
+
                 file.WriteLine(soccerData.FullTimeResult);
             }
 
