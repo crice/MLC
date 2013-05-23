@@ -38,8 +38,10 @@ namespace MLC
             AwayTeamRedCards = 21,
             Bet365HomeWinOdds = 22,
             Bet365DrawOdds = 23,
-            Bet365AwayWinOdds = 24
-
+            Bet365AwayWinOdds = 24,
+            WilliamHillHomeWinOdds = 40,
+            WilliamHillDrawOdds = 41,
+            WilliamHillAwayWinOdds = 42
         }
 
         public enum SoccerDataPositionPre2012WithReferee
@@ -96,10 +98,13 @@ namespace MLC
         private string _homeTeamRedCards;           //HR
         private string _awayTeamRedCards;           //AR
 
-        private string _bet365HomeWinOdds;           //B365H
+        private string _bet365HomeWinOdds;          //B365H
         private string _bet365DrawOdds;             //B365D
         private string _bet365AwayWinOdds;          //B365A
 
+        private string _williamHillHomeWinOdds;     //WHH
+        private string _williamHillDrawOdds;        //WHO
+        private string _williamHillAwayWinOdds;     //WHA
 
 
         #region Non-Statistical Properties
@@ -282,6 +287,24 @@ namespace MLC
         {
             get { return _bet365AwayWinOdds; }
             set { _bet365AwayWinOdds = value; }
+        }
+
+        public string WilliamHillHomeWinOdds
+        {
+            get { return _williamHillHomeWinOdds; }
+            set { _williamHillHomeWinOdds = value; }
+        }
+
+        public string WilliamHillDrawOdds
+        {
+            get { return _williamHillDrawOdds; }
+            set { _williamHillDrawOdds = value; }
+        }
+
+        public string WilliamHillAwayWinOdds
+        {
+            get { return _williamHillAwayWinOdds; }
+            set { _williamHillAwayWinOdds = value; }
         }
 
         #endregion

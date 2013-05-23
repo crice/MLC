@@ -34,6 +34,7 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -52,7 +53,6 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -93,7 +93,7 @@
             this.groupBox5.Controls.Add(this.textBox5);
             this.groupBox5.Location = new System.Drawing.Point(14, 155);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(221, 79);
+            this.groupBox5.Size = new System.Drawing.Size(331, 79);
             this.groupBox5.TabIndex = 3;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Output Filename";
@@ -102,15 +102,15 @@
             // 
             this.textBox5.Location = new System.Drawing.Point(7, 31);
             this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(172, 20);
+            this.textBox5.Size = new System.Drawing.Size(318, 20);
             this.textBox5.TabIndex = 0;
-            this.textBox5.Text = "C:\\\\OUTFILENAME.txt";
+            this.textBox5.Text = "C:\\\\wekamodelsaves\\\\OUTFILENAME.txt";
             // 
             // richTextBox1
             // 
             this.richTextBox1.Location = new System.Drawing.Point(14, 278);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(221, 96);
+            this.richTextBox1.Size = new System.Drawing.Size(331, 96);
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
             // 
@@ -121,10 +121,21 @@
             this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Location = new System.Drawing.Point(14, 36);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(221, 100);
+            this.groupBox1.Size = new System.Drawing.Size(331, 100);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "From/To Formats";
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(6, 43);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(204, 17);
+            this.checkBox3.TabIndex = 2;
+            this.checkBox3.Text = "Soccer data (PRE 2012) to arff format";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
             // checkBox2
             // 
@@ -151,7 +162,7 @@
             // button1
             // 
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(14, 7);
+            this.button1.Location = new System.Drawing.Point(66, 7);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(221, 23);
             this.button1.TabIndex = 0;
@@ -303,17 +314,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "C4.5";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(6, 43);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(204, 17);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "Soccer data (PRE 2012) to arff format";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
             // Form1
             // 

@@ -15,12 +15,16 @@ namespace MLC
         private const string HASH = "#";
         private const int HEADER_INDEX = 0;
 
+        //Arrives in an akward format.
+        private const string nottingHamForestRawDataFormat = "Nott'mForest";
+        private const string nottingHamForestPreferedFormat = "NottinghamForest";
+
 
         private enum SoccerDataResults
         {
-            D = 1,  //Draw
-            H = 2,  //Home win
-            A = 3   //Away win
+            D = 1,  //D=Draw
+            H = 2,  //H=Home win
+            A = 3   //A=Away win
         }
 
 
@@ -66,7 +70,11 @@ namespace MLC
                         //Betting
                         soccerData.Bet365HomeWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365HomeWinOdds];
                         soccerData.Bet365DrawOdds = split[(int)SoccerData.SoccerDataPosition.Bet365DrawOdds];
-                        soccerData.Bet365AwayWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365AwayWinOdds];  
+                        soccerData.Bet365AwayWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365AwayWinOdds];
+
+                        soccerData.WilliamHillHomeWinOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillHomeWinOdds];
+                        soccerData.WilliamHillDrawOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillDrawOdds];
+                        soccerData.WilliamHillAwayWinOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillAwayWinOdds];   
 
                         soccerDataList.Add(soccerData);
                     }
@@ -152,16 +160,16 @@ namespace MLC
                 else
                     newHomeTeam = sd.HomeTeam;
 
-                if (newHomeTeam.Equals("Nott'mForest"))
-                    newHomeTeam = "NottinghamForest";
+                if (newHomeTeam.Equals(nottingHamForestRawDataFormat))
+                    newHomeTeam = nottingHamForestPreferedFormat;
 
                 if (sd.AwayTeam.Contains(SPACE))
                     newAwayTeam = sd.AwayTeam.Replace(SPACE, NOTHING);
                 else
                     newAwayTeam = sd.AwayTeam;
 
-                if (newAwayTeam.Equals("Nott'mForest"))
-                    newAwayTeam = "NottinghamForest";
+                if (newAwayTeam.Equals(nottingHamForestRawDataFormat))
+                    newAwayTeam = nottingHamForestPreferedFormat;
 
                 string fixture = newHomeTeam + HYPHEN + newAwayTeam; 
                 if (!teamGames.Contains(fixture))
@@ -211,8 +219,8 @@ namespace MLC
             {
                 string fixture = soccerData.HomeTeam.Replace(SPACE, NOTHING) + HYPHEN + soccerData.AwayTeam.Replace(SPACE, NOTHING) + COMMA;
 
-                if (fixture.Contains("Nott'mForest"))
-                    fixture = fixture.Replace("Nott'mForest", "NottinghamForest");
+                if (fixture.Contains(nottingHamForestRawDataFormat))
+                    fixture = fixture.Replace(nottingHamForestRawDataFormat, nottingHamForestPreferedFormat);
 
                 file.Write(fixture + SPACE);
                 file.Write(soccerData.FullTimeHomeTeamGoals + COMMA);
@@ -266,8 +274,8 @@ namespace MLC
                 else
                     newHomeTeam = sd.HomeTeam;
 
-                if (newHomeTeam.Equals("Nott'mForest"))
-                    newHomeTeam = "NottinghamForest";
+                if (newHomeTeam.Equals(nottingHamForestRawDataFormat))
+                    newHomeTeam = nottingHamForestPreferedFormat;
 
                 if (!homeTeams.Contains(newHomeTeam))
                 {
@@ -280,8 +288,8 @@ namespace MLC
                 else
                     newAwayTeam = sd.AwayTeam;
 
-                if (newAwayTeam.Equals("Nott'mForest"))
-                    newAwayTeam = "NottinghamForest";
+                if (newAwayTeam.Equals(nottingHamForestRawDataFormat))
+                    newAwayTeam = nottingHamForestPreferedFormat;
 
                 if (!awayTeams.Contains(newAwayTeam))
                 {
@@ -330,7 +338,11 @@ namespace MLC
 
             file.WriteLine("@attribute \'Bet365HomeWinOdds\' numeric");
             file.WriteLine("@attribute \'Bet365DrawOdds\' numeric");
-            file.WriteLine("@attribute \'Bet365AwayWinOdds\' numeric"); 
+            file.WriteLine("@attribute \'Bet365AwayWinOdds\' numeric");
+
+            file.WriteLine("@attribute \'WilliamHillHomeWinOdds\' numeric");
+            file.WriteLine("@attribute \'WilliamHillDrawOdds\' numeric");
+            file.WriteLine("@attribute \'WilliamHillAwayWinOdds\' numeric"); 
 
             file.WriteLine("@attribute \'class\' { D,H,A }");
             file.WriteLine("@data");
@@ -340,10 +352,10 @@ namespace MLC
                 string homeTeam = soccerData.HomeTeam.Replace(SPACE, NOTHING);
                 string awayTeam = soccerData.AwayTeam.Replace(SPACE, NOTHING);
 
-                if (homeTeam.Contains("Nott'mForest"))
-                    homeTeam = homeTeam.Replace("Nott'mForest", "NottinghamForest");
-                if (awayTeam.Contains("Nott'mForest"))
-                    awayTeam = awayTeam.Replace("Nott'mForest", "NottinghamForest");
+                if (homeTeam.Contains(nottingHamForestRawDataFormat))
+                    homeTeam = homeTeam.Replace(nottingHamForestRawDataFormat, nottingHamForestPreferedFormat);
+                if (awayTeam.Contains(nottingHamForestRawDataFormat))
+                    awayTeam = awayTeam.Replace(nottingHamForestRawDataFormat, nottingHamForestPreferedFormat);
 
                 file.Write(homeTeam + COMMA);
                 file.Write(awayTeam + COMMA);
@@ -376,6 +388,10 @@ namespace MLC
                 file.Write(soccerData.Bet365DrawOdds + COMMA);
                 file.Write(soccerData.Bet365AwayWinOdds + COMMA);
 
+                file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
+                file.Write(soccerData.WilliamHillDrawOdds + COMMA);
+                file.Write(soccerData.WilliamHillAwayWinOdds + COMMA);
+
                 file.WriteLine(soccerData.FullTimeResult);
             }
 
@@ -389,7 +405,6 @@ namespace MLC
             soccerDataList.RemoveAt(HEADER_INDEX);  
 
             System.IO.StreamWriter outFile = new System.IO.StreamWriter(outFileName);
-
             List<string> teamGames = new List<string>();
             string newHomeTeam = string.Empty;
             string newAwayTeam = string.Empty;
@@ -448,7 +463,16 @@ namespace MLC
                 outFile.Write("15:" +soccerData.AwayTeamYellowCards + SPACE);
 
                 outFile.Write("16:" +soccerData.HomeTeamRedCards + SPACE);
-                outFile.WriteLine("17:" +soccerData.AwayTeamRedCards + SPACE);
+                outFile.Write("17:" +soccerData.AwayTeamRedCards + SPACE);
+
+                //Betting
+                outFile.Write("18:" + soccerData.Bet365HomeWinOdds + SPACE);
+                outFile.Write("19:" + soccerData.Bet365DrawOdds + SPACE);
+                outFile.Write("20:" + soccerData.Bet365AwayWinOdds + SPACE);
+                outFile.Write("21:" + soccerData.WilliamHillHomeWinOdds + SPACE);
+                outFile.Write("22:" + soccerData.WilliamHillDrawOdds + SPACE);
+                outFile.WriteLine("23:" + soccerData.WilliamHillAwayWinOdds + SPACE);
+
                 //outFile.WriteLine("# " + fixture + " (" +sortedTeamGames.IndexOf(fixture).ToString() +")");                    
             }
 
@@ -459,12 +483,12 @@ namespace MLC
 
         public static string ConvertFullTimeResultToConsistentNumber(string fullTimeResult)
         {
-            if (fullTimeResult.Equals(SoccerDataResults.D.ToString()))
-                return "1";
+            if (fullTimeResult.Equals(SoccerDataResults.D.ToString()))            
+                return ((int)SoccerDataResults.D).ToString();             
             else if (fullTimeResult.Equals(SoccerDataResults.H.ToString()))
-                return "2";
+                return ((int)SoccerDataResults.H).ToString();
             else if (fullTimeResult.Equals(SoccerDataResults.A.ToString()))
-                return "3";
+                return ((int)SoccerDataResults.A).ToString();
             else
                 return "ERROR";
 
