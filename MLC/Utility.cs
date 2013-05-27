@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.IO; 
+using System.IO;
+using System.Xml; 
 
 namespace MLC
 {
@@ -14,6 +15,10 @@ namespace MLC
         private const string NOTHING = "";
         private const string HASH = "#";
         private const int HEADER_INDEX = 0;
+        private const string COMMASPACE = ", ";
+
+        private const string PATH = @"..\..\Premiership.xml";
+
 
         //Arrives in an akward format.
         private const string nottingHamForestRawDataFormat = "Nott'mForest";
@@ -27,6 +32,23 @@ namespace MLC
             A = 3   //A=Away win
         }
 
+
+        public static List<string> ReadXmlFile()
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(PATH);
+            XmlNodeList nodeList = xmlDoc.GetElementsByTagName("team");
+
+            List<string> teams = new List<String>();
+
+            foreach (XmlNode xmlNode in nodeList)
+            {
+                teams.Add(xmlNode.InnerText);  
+            }                       
+
+            return teams;
+
+        }
 
 
         public static List<SoccerData> ReadSoccerDataFromFile(string fileName)
@@ -256,6 +278,9 @@ namespace MLC
 
         public static void WriteOutSoccerDataToArffFormat_SIMPLEFORMAT(List<SoccerData> soccerDataList, string outFileName)
         {
+
+            ReadXmlFile();
+
             soccerDataList.RemoveAt(HEADER_INDEX);
 
             List<string> homeTeams = new List<string>();
@@ -300,10 +325,8 @@ namespace MLC
             }
 
             //Remove comma at end & add the brackets
-            allHomeTeams = allHomeTeams.TrimEnd(new char[] { COMMA });
-            allHomeTeams = "{ " + allHomeTeams + " }";
-            allAwayTeams = allAwayTeams.TrimEnd(new char[] { COMMA });
-            allAwayTeams = "{ " + allAwayTeams + " }";
+            allHomeTeams = SortAnnexAddBrackets(homeTeams);
+            allAwayTeams = SortAnnexAddBrackets(awayTeams);
 
             System.IO.StreamWriter file = new System.IO.StreamWriter(outFileName);
 
@@ -388,9 +411,20 @@ namespace MLC
                 file.Write(soccerData.Bet365DrawOdds + COMMA);
                 file.Write(soccerData.Bet365AwayWinOdds + COMMA);
 
-                file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
-                file.Write(soccerData.WilliamHillDrawOdds + COMMA);
-                file.Write(soccerData.WilliamHillAwayWinOdds + COMMA);
+                if(!soccerData.WilliamHillHomeWinOdds.Equals(NOTHING))
+                    file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
+                else
+                    file.Write("?" + COMMA);
+
+                if (!soccerData.WilliamHillDrawOdds.Equals(NOTHING))
+                    file.Write(soccerData.WilliamHillDrawOdds + COMMA);
+                else
+                    file.Write("?" + COMMA);
+
+                if (!soccerData.WilliamHillAwayWinOdds.Equals(NOTHING))
+                    file.Write(soccerData.WilliamHillAwayWinOdds + COMMA);
+                else
+                    file.Write("?" + COMMA);
 
                 file.WriteLine(soccerData.FullTimeResult);
             }
@@ -505,6 +539,18 @@ namespace MLC
                 fixtureNumber = "-1";
 
             return fixtureNumber;
+        }
+
+        /// <summary>
+        /// Sorts & concatonates an unsorted list of teams and then adds brackets to form arff format
+        /// </summary>
+        /// <param name="strList">Unsorted list of teams like: ManUnited, Wigan, AstonVilla</param>
+        /// <returns>Comma seperated string like: { AstonVilla, ManUnited, Wigan, etc.. }</returns>
+        public static string SortAnnexAddBrackets(List<string> strList)
+        {
+            List<string> sortedList = strList.OrderBy(mc => mc).ToList();       //Sort alpha first
+            string concat = String.Join<string>(COMMASPACE, sortedList);        //CSV format            
+            return "{ " + concat + " }";                                        //Arff format
         }
 
     }

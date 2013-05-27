@@ -104,13 +104,13 @@
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(318, 20);
             this.textBox5.TabIndex = 0;
-            this.textBox5.Text = "C:\\\\wekamodelsaves\\\\OUTFILENAME.txt";
+            this.textBox5.Text = "C:\\\\WekaModelSaves\\\\PreimiershipRawData\\\\CSV\\\\OUT.arff";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(14, 278);
+            this.richTextBox1.Location = new System.Drawing.Point(14, 255);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(331, 96);
+            this.richTextBox1.Size = new System.Drawing.Size(331, 119);
             this.richTextBox1.TabIndex = 2;
             this.richTextBox1.Text = "";
             // 
