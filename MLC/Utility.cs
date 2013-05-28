@@ -291,6 +291,7 @@ namespace MLC
             string newAwayTeam = string.Empty;
 
             //Extact all unique game fixtures like: Arsenal-Sunderland (also remove any spaces like Man United -> ManUnited)
+            /*
             foreach (SoccerData sd in soccerDataList)
             {
 
@@ -321,12 +322,15 @@ namespace MLC
                     awayTeams.Add(newAwayTeam);
                     allAwayTeams += newAwayTeam + ",";
                 }
-
             }
+             * */
 
-            //Remove comma at end & add the brackets
+            homeTeams = ReadXmlFile(); 
             allHomeTeams = SortAnnexAddBrackets(homeTeams);
-            allAwayTeams = SortAnnexAddBrackets(awayTeams);
+            allAwayTeams = allHomeTeams;
+            //Remove comma at end & add the brackets
+            //allHomeTeams = SortAnnexAddBrackets(homeTeams);
+            //allAwayTeams = SortAnnexAddBrackets(awayTeams);
 
             System.IO.StreamWriter file = new System.IO.StreamWriter(outFileName);
 

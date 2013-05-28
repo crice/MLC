@@ -9,6 +9,12 @@ using System.Windows.Forms;
 using System.IO;
 using SVM;
 
+using weka.core;
+using java.io;
+using weka.classifiers;
+using weka.classifiers.bayes;  
+
+
 namespace MLC
 {
     public partial class Form1 : Form
@@ -110,6 +116,43 @@ namespace MLC
             //results in results.txt.
             this.richTextBox2.AppendText("Begin prediction...");
             Prediction.Predict(test, @resultsFileLocation, model, false);
+        }
+
+
+        //WEKA
+        private void button3_Click(object sender, EventArgs e)
+        {               
+            string trainPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem12_11_10_09_08.arff";
+            string testPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem13ReqPred.arff";
+
+            try
+            {
+                Instances train = new Instances(new BufferedReader(new FileReader(trainPath)));
+                train.setClassIndex(train.numAttributes() - 1);  
+                Instances test = new Instances(new BufferedReader(new FileReader(testPath)));
+                test.setClassIndex(test.numAttributes() - 1);  
+
+                //Train classifier
+                Classifier classifier = new NaiveBayes();
+                classifier.buildClassifier(train);
+
+                Evaluation eval = new Evaluation(train);
+                //eval.evaluateModel(classifier, test);
+                //Random rand = new Random(1);
+                java.util.Random rand = new java.util.Random(1);  
+                eval.crossValidateModel(classifier, test, 10, rand, new Object[] { } ); 
+ 
+                this.richTextBox3.Text = eval.toSummaryString("\nResults\n======\n", true);
+  
+            }
+            catch (java.lang.Exception ex)
+            {
+                ex.printStackTrace(); 
+            }
+
+
+ 
+
         }
 
 
