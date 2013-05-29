@@ -54,8 +54,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -322,6 +323,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.button4);
             this.tabPage4.Controls.Add(this.richTextBox3);
             this.tabPage4.Controls.Add(this.button3);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
@@ -330,6 +332,14 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Weka via IKVM";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox3
+            // 
+            this.richTextBox3.Location = new System.Drawing.Point(28, 80);
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.Size = new System.Drawing.Size(663, 305);
+            this.richTextBox3.TabIndex = 1;
+            this.richTextBox3.Text = "";
             // 
             // button3
             // 
@@ -341,13 +351,15 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // richTextBox3
+            // button4
             // 
-            this.richTextBox3.Location = new System.Drawing.Point(28, 80);
-            this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.Size = new System.Drawing.Size(663, 305);
-            this.richTextBox3.TabIndex = 1;
-            this.richTextBox3.Text = "";
+            this.button4.Location = new System.Drawing.Point(305, 28);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(148, 23);
+            this.button4.TabIndex = 2;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form1
             // 
@@ -404,6 +416,7 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.RichTextBox richTextBox3;
+        private System.Windows.Forms.Button button4;
     }
 }
 

@@ -134,26 +134,93 @@ namespace MLC
 
                 //Train classifier
                 Classifier classifier = new NaiveBayes();
+                classifier.setOptions(new string[] { "-D" });   //use supervised descritization
                 classifier.buildClassifier(train);
 
                 Evaluation eval = new Evaluation(train);
-                //eval.evaluateModel(classifier, test);
-                //Random rand = new Random(1);
-                java.util.Random rand = new java.util.Random(1);  
-                eval.crossValidateModel(classifier, test, 10, rand, new Object[] { } ); 
+                java.util.Random rand = new java.util.Random(1); 
+                 
+                eval.crossValidateModel(classifier, train, 9, rand, new Object[] { } ); 
  
-                this.richTextBox3.Text = eval.toSummaryString("\nResults\n======\n", true);
+                this.richTextBox3.Text = eval.toSummaryString("\nResults\n======\n", true);                
+                this.richTextBox3.Text += eval.toClassDetailsString(); 
+                this.richTextBox3.Text += eval.toMatrixString();
   
             }
             catch (java.lang.Exception ex)
             {
                 ex.printStackTrace(); 
             }
+        }
 
 
- 
+
+
+        public void GetBayesNet(string trainPath, string testPath, int folds)
+        {
+
+            try
+            {
+                //Load training & test datasets
+                Instances train = new Instances(new BufferedReader(new FileReader(trainPath)));
+                train.setClassIndex(train.numAttributes() - 1);
+                Instances test = new Instances(new BufferedReader(new FileReader(testPath)));
+                test.setClassIndex(test.numAttributes() - 1);
+
+                Classifier classifier = new BayesNet();                   
+                
+                String[] options = new String[20];
+                options[0] = "-D";
+                options[1] = "-Q";
+                options[2] = "weka.classifiers.bayes.net.search.local.K2";
+                options[3] = "--";
+                options[4] = "-P";
+                options[5] = "1";
+                options[6] = "-S";
+                options[7] = "BAYES";
+                options[8] = "";
+                options[9] = "";
+                options[10] = "";
+                options[11] = "-E";
+                //options[12] = "weka.classifiers.bayes.net.estimate.SimpleEstimator";
+                options[12] = "weka.classifiers.bayes.net.estimate.BMAEstimator";
+                options[13] = "--";
+                options[14] = "-A";
+                options[15] = "0.5";
+                options[16] = "";
+                options[17] = "";
+                options[18] = "";
+                options[19] = "";
+                classifier.setOptions(options);
+
+                Evaluation eval = new Evaluation(train);
+                java.util.Random rand = new java.util.Random(1);
+
+                eval.crossValidateModel(classifier, train, 30, rand, new Object[] { }); 
+
+                this.richTextBox3.Text = eval.toSummaryString("\nResults\n======\n", true);
+                this.richTextBox3.Text += eval.toClassDetailsString();
+                this.richTextBox3.Text += eval.toMatrixString();
+
+            }
+            catch (java.lang.Exception ex)
+            {
+
+            }
+
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string trainPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem12_11_10_09_08.arff";
+            string testPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem13ReqPred.arff";
+            int folds = 30;
+
+            GetBayesNet(trainPath, testPath, folds);
+        
+        }
+
 
 
 
