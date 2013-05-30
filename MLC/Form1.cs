@@ -40,7 +40,7 @@ namespace MLC
                 {
                     string fileName = openFileDialog.FileName;
                     List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
-                    Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT(soccerData, outFileName);
+                    Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(soccerData, outFileName);
 
                     richTextBox1.Text = "Text output to C:\\"; 
                 }
@@ -155,7 +155,6 @@ namespace MLC
 
 
 
-
         public void GetBayesNet(string trainPath, string testPath, int folds)
         {
 
@@ -207,6 +206,43 @@ namespace MLC
             {
 
             }
+        }
+
+
+        public void GetRandomCommittee(string trainPath, string testPath, int folds)
+        {
+            //Load training & test datasets
+            Instances train = new Instances(new BufferedReader(new FileReader(trainPath)));
+            train.setClassIndex(train.numAttributes() - 1);
+            Instances test = new Instances(new BufferedReader(new FileReader(testPath)));
+            test.setClassIndex(test.numAttributes() - 1);
+
+            Classifier classifier = new weka.classifiers.meta.RandomCommittee();
+
+            String[] options = new String[13];
+            options[0] = "-S";
+            options[1] = "1";
+            options[2] = "-I";
+            options[3] = "30";
+            options[4] = "-W";
+            options[5] = "weka.classifiers.trees.RandomTree";
+            options[6] = "--";
+            options[7] = "-K";
+            options[8] = "0";
+            options[9] = "-M";
+            options[10] = "1.0";
+            options[11] = "-S";
+            options[12] = "1";
+
+
+            Evaluation eval = new Evaluation(train);
+            java.util.Random rand = new java.util.Random(1);
+
+            eval.crossValidateModel(classifier, test, folds, rand, new Object[] { });
+
+            this.richTextBox3.Text = eval.toSummaryString("\nResults\n======\n", true);
+            this.richTextBox3.Text += eval.toClassDetailsString();
+            this.richTextBox3.Text += eval.toMatrixString();
 
 
         }
@@ -215,9 +251,11 @@ namespace MLC
         {
             string trainPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem12_11_10_09_08.arff";
             string testPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem13ReqPred.arff";
-            int folds = 30;
+            int folds = 10;
 
-            GetBayesNet(trainPath, testPath, folds);
+            //GetBayesNet(trainPath, testPath, folds);
+
+            GetRandomCommittee(trainPath, testPath, folds);
         
         }
 

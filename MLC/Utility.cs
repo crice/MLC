@@ -16,6 +16,7 @@ namespace MLC
         private const string HASH = "#";
         private const int HEADER_INDEX = 0;
         private const string COMMASPACE = ", ";
+        private const string QUESTION_MARK = "?";
 
         private const string PATH = @"..\..\Premiership.xml";
 
@@ -23,6 +24,9 @@ namespace MLC
         //Arrives in an akward format.
         private const string nottingHamForestRawDataFormat = "Nott'mForest";
         private const string nottingHamForestPreferedFormat = "NottinghamForest";
+
+        private const string middlesBroughRawDataFormat = "Middlesboro";
+        private const string middlesBroughPreferredFormat = "Middlesbrough";
 
 
         private enum SoccerDataResults
@@ -290,40 +294,6 @@ namespace MLC
             string newHomeTeam = string.Empty;
             string newAwayTeam = string.Empty;
 
-            //Extact all unique game fixtures like: Arsenal-Sunderland (also remove any spaces like Man United -> ManUnited)
-            /*
-            foreach (SoccerData sd in soccerDataList)
-            {
-
-                if (sd.HomeTeam.Contains(SPACE))
-                    newHomeTeam = sd.HomeTeam.Replace(SPACE, NOTHING);
-                else
-                    newHomeTeam = sd.HomeTeam;
-
-                if (newHomeTeam.Equals(nottingHamForestRawDataFormat))
-                    newHomeTeam = nottingHamForestPreferedFormat;
-
-                if (!homeTeams.Contains(newHomeTeam))
-                {
-                    homeTeams.Add(newHomeTeam);
-                    allHomeTeams += newHomeTeam + ",";
-                }
-
-                if (sd.AwayTeam.Contains(SPACE))
-                    newAwayTeam = sd.AwayTeam.Replace(SPACE, NOTHING);
-                else
-                    newAwayTeam = sd.AwayTeam;
-
-                if (newAwayTeam.Equals(nottingHamForestRawDataFormat))
-                    newAwayTeam = nottingHamForestPreferedFormat;
-
-                if (!awayTeams.Contains(newAwayTeam))
-                {
-                    awayTeams.Add(newAwayTeam);
-                    allAwayTeams += newAwayTeam + ",";
-                }
-            }
-             * */
 
             homeTeams = ReadXmlFile(); 
             allHomeTeams = SortAnnexAddBrackets(homeTeams);
@@ -416,6 +386,140 @@ namespace MLC
                 file.Write(soccerData.Bet365AwayWinOdds + COMMA);
 
                 if(!soccerData.WilliamHillHomeWinOdds.Equals(NOTHING))
+                    file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
+                else
+                    file.Write("?" + COMMA);
+
+                if (!soccerData.WilliamHillDrawOdds.Equals(NOTHING))
+                    file.Write(soccerData.WilliamHillDrawOdds + COMMA);
+                else
+                    file.Write("?" + COMMA);
+
+                if (!soccerData.WilliamHillAwayWinOdds.Equals(NOTHING))
+                    file.Write(soccerData.WilliamHillAwayWinOdds + COMMA);
+                else
+                    file.Write("?" + COMMA);
+
+                file.WriteLine(soccerData.FullTimeResult);
+            }
+
+            file.Close();
+
+        }
+
+
+        public static void WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(List<SoccerData> soccerDataList, string outFileName)
+        {
+
+            ReadXmlFile();
+
+            soccerDataList.RemoveAt(HEADER_INDEX);
+
+            List<string> homeTeams = new List<string>();
+            List<string> awayTeams = new List<string>();
+            string allHomeTeams = string.Empty;
+            string allAwayTeams = string.Empty;
+            string newHomeTeam = string.Empty;
+            string newAwayTeam = string.Empty;
+
+
+            homeTeams = ReadXmlFile();
+            allHomeTeams = SortAnnexAddBrackets(homeTeams);
+            allAwayTeams = allHomeTeams;
+            //Remove comma at end & add the brackets
+            //allHomeTeams = SortAnnexAddBrackets(homeTeams);
+            //allAwayTeams = SortAnnexAddBrackets(awayTeams);
+
+            System.IO.StreamWriter file = new System.IO.StreamWriter(outFileName);
+
+            file.WriteLine("% 1. Title: Premiership Data 2013 Season\n");
+            file.WriteLine("% 2. Source: http://www.football-data.co.uk/data.php");
+            file.WriteLine("\n\n");
+            file.WriteLine("@relation Premiership2013");
+
+            file.WriteLine("@attribute \'HomeTeam\' " + allHomeTeams);
+            file.WriteLine("@attribute \'AwayTeam\' " + allAwayTeams);
+            file.WriteLine("@attribute \'FullTimeHomeTeamGoals\' numeric");
+            file.WriteLine("@attribute \'FullTimeAwayTeamGoals\' numeric");
+            file.WriteLine("@attribute \'HalfTimeHomeTeamGoals\' numeric");
+            file.WriteLine("@attribute \'HalfTimeAwayTeamGoals\' numeric");
+            //file.WriteLine("@attribute \'HalfTimeResult\' numeric");
+            file.WriteLine("@attribute \'HomeTeamShots\' numeric");
+            file.WriteLine("@attribute \'AwayTeamShots\' numeric");
+            file.WriteLine("@attribute \'HomeTeamShotsOnTarget\' numeric");
+            file.WriteLine("@attribute \'AwayTeamShotsOnTarget\' numeric");
+
+            file.WriteLine("@attribute \'HomeTeamFoulsCommitted\' numeric");
+            file.WriteLine("@attribute \'AwayTeamFoulsCommitted\' numeric");
+
+            file.WriteLine("@attribute \'HomeTeamCorners\' numeric");
+            file.WriteLine("@attribute \'AwayTeamCorners\' numeric");
+
+            file.WriteLine("@attribute \'HomeTeamYellowCards\' numeric");
+            file.WriteLine("@attribute \'AwayTeamYellowCards\' numeric");
+
+            file.WriteLine("@attribute \'HomeTeamRedCards\' numeric");
+            file.WriteLine("@attribute \'AwayTeamRedCards\' numeric");
+
+            file.WriteLine("@attribute \'Bet365HomeWinOdds\' numeric");
+            file.WriteLine("@attribute \'Bet365DrawOdds\' numeric");
+            file.WriteLine("@attribute \'Bet365AwayWinOdds\' numeric");
+
+            file.WriteLine("@attribute \'WilliamHillHomeWinOdds\' numeric");
+            file.WriteLine("@attribute \'WilliamHillDrawOdds\' numeric");
+            file.WriteLine("@attribute \'WilliamHillAwayWinOdds\' numeric");
+
+            file.WriteLine("@attribute \'class\' { D,H,A }");
+            file.WriteLine("@data");
+
+            foreach (SoccerData soccerData in soccerDataList)
+            {
+                string homeTeam = soccerData.HomeTeam.Replace(SPACE, NOTHING);
+                string awayTeam = soccerData.AwayTeam.Replace(SPACE, NOTHING);
+
+                if (homeTeam.Contains(nottingHamForestRawDataFormat))
+                    homeTeam = homeTeam.Replace(nottingHamForestRawDataFormat, nottingHamForestPreferedFormat);
+                if (awayTeam.Contains(nottingHamForestRawDataFormat))
+                    awayTeam = awayTeam.Replace(nottingHamForestRawDataFormat, nottingHamForestPreferedFormat);
+
+
+                if (homeTeam.Contains(middlesBroughRawDataFormat))
+                    homeTeam = homeTeam.Replace(middlesBroughRawDataFormat, middlesBroughPreferredFormat);
+                if (awayTeam.Contains(middlesBroughRawDataFormat))
+                    awayTeam = awayTeam.Replace(middlesBroughRawDataFormat, middlesBroughPreferredFormat);
+
+                file.Write(homeTeam + COMMA);
+                file.Write(awayTeam + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+
+                //file.Write(soccerData.HalfTimeResult + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+
+                file.Write(QUESTION_MARK + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+
+                //Betting
+                file.Write(soccerData.Bet365HomeWinOdds + COMMA);
+                file.Write(soccerData.Bet365DrawOdds + COMMA);
+                file.Write(soccerData.Bet365AwayWinOdds + COMMA);
+
+                if (!soccerData.WilliamHillHomeWinOdds.Equals(NOTHING))
                     file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
                 else
                     file.Write("?" + COMMA);
