@@ -354,6 +354,12 @@ namespace MLC
                 if (awayTeam.Contains(nottingHamForestRawDataFormat))
                     awayTeam = awayTeam.Replace(nottingHamForestRawDataFormat, nottingHamForestPreferedFormat);
 
+
+                if (homeTeam.Contains(middlesBroughRawDataFormat))
+                    homeTeam = homeTeam.Replace(middlesBroughRawDataFormat, middlesBroughPreferredFormat);
+                if (awayTeam.Contains(middlesBroughRawDataFormat))
+                    awayTeam = awayTeam.Replace(middlesBroughRawDataFormat, middlesBroughPreferredFormat);
+
                 file.Write(homeTeam + COMMA);
                 file.Write(awayTeam + COMMA);
                 file.Write(soccerData.FullTimeHomeTeamGoals + COMMA);
