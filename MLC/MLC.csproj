@@ -93,6 +93,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Content Include="lib\Premiership_13_12_11_10_09.txt" />
+    <Content Include="lib\Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt" />
+    <Content Include="lib\Premiership_12_11_10_09_08.txt" />
+    <Content Include="lib\Premiership13.txt" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -104,8 +108,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Premiership.xml" />
+    <Content Include="Premiership.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

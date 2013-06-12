@@ -39,6 +39,9 @@ namespace MLC
             Bet365HomeWinOdds = 22,
             Bet365DrawOdds = 23,
             Bet365AwayWinOdds = 24,
+            LadbrooksHomeWinOdds = 34,
+            LadbrooksDrawOdds = 35,
+            LadbrooksAwayWinOdds = 36,
             WilliamHillHomeWinOdds = 40,
             WilliamHillDrawOdds = 41,
             WilliamHillAwayWinOdds = 42
@@ -101,6 +104,10 @@ namespace MLC
         private string _bet365HomeWinOdds;          //B365H
         private string _bet365DrawOdds;             //B365D
         private string _bet365AwayWinOdds;          //B365A
+
+        private string _ladbrooksHomeWinOdds;       //LBH
+        private string _ladbrooksDrawOdds;          //LBD
+        private string _ladbrooksAwayWinOdds;       //LBA
 
         private string _williamHillHomeWinOdds;     //WHH
         private string _williamHillDrawOdds;        //WHO
@@ -287,6 +294,24 @@ namespace MLC
         {
             get { return _bet365AwayWinOdds; }
             set { _bet365AwayWinOdds = value; }
+        }
+
+        public string LadbrooksHomeWinOdds
+        {
+            get { return _ladbrooksHomeWinOdds; }
+            set { _ladbrooksHomeWinOdds = value; }
+        }
+
+        public string LadbrooksAwayWinOdds
+        {
+            get { return _ladbrooksAwayWinOdds; }
+            set { _ladbrooksAwayWinOdds = value; }
+        }
+
+        public string LadbrooksDrawOdds
+        {
+            get { return _ladbrooksDrawOdds; }
+            set { _ladbrooksDrawOdds = value; }
         }
 
         public string WilliamHillHomeWinOdds

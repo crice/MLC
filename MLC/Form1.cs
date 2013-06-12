@@ -48,8 +48,9 @@ namespace MLC
                 else if (checkBox3.Checked == true)
                 {
                     string fileName = openFileDialog.FileName;
-                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFilePre2012WithReferee(fileName);
-                    Utility.WriteOutSoccerDataToArffFormat(soccerData, outFileName);
+                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
+                    Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(soccerData, outFileName);  
+                    //Utility.WriteOutSoccerDataToArffFormat(soccerData, outFileName);
 
                     richTextBox1.Text = "Text output to C:\\"; 
                 }

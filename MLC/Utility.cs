@@ -93,11 +93,19 @@ namespace MLC
                         soccerData.HomeTeamRedCards = split[(int)SoccerData.SoccerDataPosition.HomeTeamRedCards];
                         soccerData.AwayTeamRedCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamRedCards];
 
-                        //Betting
+                        //***** BETTING *****
+
+                        //Bet365
                         soccerData.Bet365HomeWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365HomeWinOdds];
                         soccerData.Bet365DrawOdds = split[(int)SoccerData.SoccerDataPosition.Bet365DrawOdds];
                         soccerData.Bet365AwayWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365AwayWinOdds];
 
+                        //Ladbrooks
+                        soccerData.LadbrooksHomeWinOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksHomeWinOdds];
+                        soccerData.LadbrooksDrawOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksDrawOdds];
+                        soccerData.LadbrooksAwayWinOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksAwayWinOdds];   
+
+                        //William Hill
                         soccerData.WilliamHillHomeWinOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillHomeWinOdds];
                         soccerData.WilliamHillDrawOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillDrawOdds];
                         soccerData.WilliamHillAwayWinOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillAwayWinOdds];   
@@ -337,6 +345,10 @@ namespace MLC
             file.WriteLine("@attribute \'Bet365DrawOdds\' numeric");
             file.WriteLine("@attribute \'Bet365AwayWinOdds\' numeric");
 
+            file.WriteLine("@attribute \'LadbrooksHomeWinOdds\' numeric");
+            file.WriteLine("@attribute \'LadbrooksDrawOdds\' numeric");
+            file.WriteLine("@attribute \'LadbrooksAwayWinOdds\' numeric");                 
+
             file.WriteLine("@attribute \'WilliamHillHomeWinOdds\' numeric");
             file.WriteLine("@attribute \'WilliamHillDrawOdds\' numeric");
             file.WriteLine("@attribute \'WilliamHillAwayWinOdds\' numeric"); 
@@ -386,25 +398,44 @@ namespace MLC
                 file.Write(soccerData.HomeTeamRedCards + COMMA);
                 file.Write(soccerData.AwayTeamRedCards + COMMA);
 
-                //Betting
+                //***** BETTING *****
+                
+                //Bet365
                 file.Write(soccerData.Bet365HomeWinOdds + COMMA);
                 file.Write(soccerData.Bet365DrawOdds + COMMA);
                 file.Write(soccerData.Bet365AwayWinOdds + COMMA);
 
+                //Ladbrooks
+                if (!soccerData.LadbrooksHomeWinOdds.Equals(NOTHING))
+                    file.Write(soccerData.LadbrooksHomeWinOdds + COMMA);
+                else
+                    file.Write(QUESTION_MARK + COMMA);
+
+                if (!soccerData.LadbrooksDrawOdds.Equals(NOTHING))
+                    file.Write(soccerData.LadbrooksDrawOdds + COMMA);
+                else
+                    file.Write(QUESTION_MARK + COMMA);
+
+                if (!soccerData.LadbrooksAwayWinOdds.Equals(NOTHING))
+                    file.Write(soccerData.LadbrooksAwayWinOdds + COMMA);
+                else
+                    file.Write(QUESTION_MARK + COMMA);
+
+                //William Hill
                 if(!soccerData.WilliamHillHomeWinOdds.Equals(NOTHING))
                     file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
                 else
-                    file.Write("?" + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
 
                 if (!soccerData.WilliamHillDrawOdds.Equals(NOTHING))
                     file.Write(soccerData.WilliamHillDrawOdds + COMMA);
                 else
-                    file.Write("?" + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
 
                 if (!soccerData.WilliamHillAwayWinOdds.Equals(NOTHING))
                     file.Write(soccerData.WilliamHillAwayWinOdds + COMMA);
                 else
-                    file.Write("?" + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
 
                 file.WriteLine(soccerData.FullTimeResult);
             }
@@ -471,6 +502,10 @@ namespace MLC
             file.WriteLine("@attribute \'Bet365DrawOdds\' numeric");
             file.WriteLine("@attribute \'Bet365AwayWinOdds\' numeric");
 
+            file.WriteLine("@attribute \'LadbrooksHomeWinOdds\' numeric");
+            file.WriteLine("@attribute \'LadbrooksDrawOdds\' numeric");
+            file.WriteLine("@attribute \'LadbrooksAwayWinOdds\' numeric");  
+
             file.WriteLine("@attribute \'WilliamHillHomeWinOdds\' numeric");
             file.WriteLine("@attribute \'WilliamHillDrawOdds\' numeric");
             file.WriteLine("@attribute \'WilliamHillAwayWinOdds\' numeric");
@@ -520,25 +555,45 @@ namespace MLC
                 file.Write(QUESTION_MARK + COMMA);
                 file.Write(QUESTION_MARK + COMMA);
 
-                //Betting
+                //***** BETTING *****
+
+                //Bet365
                 file.Write(soccerData.Bet365HomeWinOdds + COMMA);
                 file.Write(soccerData.Bet365DrawOdds + COMMA);
                 file.Write(soccerData.Bet365AwayWinOdds + COMMA);
 
+                //Ladbrooks
+                if (!soccerData.LadbrooksHomeWinOdds.Equals(NOTHING))
+                    file.Write(soccerData.LadbrooksHomeWinOdds + COMMA);
+                else
+                    file.Write(QUESTION_MARK + COMMA);
+
+                if (!soccerData.LadbrooksDrawOdds.Equals(NOTHING))
+                    file.Write(soccerData.LadbrooksDrawOdds + COMMA);
+                else
+                    file.Write(QUESTION_MARK + COMMA);
+
+                if (!soccerData.LadbrooksAwayWinOdds.Equals(NOTHING))
+                    file.Write(soccerData.LadbrooksAwayWinOdds + COMMA);
+                else
+                    file.Write(QUESTION_MARK + COMMA);
+
+
+                //WilliamHill
                 if (!soccerData.WilliamHillHomeWinOdds.Equals(NOTHING))
                     file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
                 else
-                    file.Write("?" + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
 
                 if (!soccerData.WilliamHillDrawOdds.Equals(NOTHING))
                     file.Write(soccerData.WilliamHillDrawOdds + COMMA);
                 else
-                    file.Write("?" + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
 
                 if (!soccerData.WilliamHillAwayWinOdds.Equals(NOTHING))
                     file.Write(soccerData.WilliamHillAwayWinOdds + COMMA);
                 else
-                    file.Write("?" + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
 
                 file.WriteLine(soccerData.FullTimeResult);
             }
