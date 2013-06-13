@@ -124,8 +124,11 @@ namespace MLC
         //WEKA
         private void button3_Click(object sender, EventArgs e)
         {               
-            string trainPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem12_11_10_09_08.arff";
-            string testPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem13ReqPred.arff";
+            //string trainPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem12_11_10_09_08.arff";
+            //string testPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem13ReqPred.arff";
+
+            string trainPath = @"../../lib/Premiership_12to01_Train_3BookiesOnly.arff";
+            string testPath = @"../../lib/Premiership_13_ReqPred_3Bookies.arff";
 
             try
             {
@@ -136,17 +139,42 @@ namespace MLC
 
                 //Train classifier
                 Classifier classifier = new NaiveBayes();
-                classifier.setOptions(new string[] { "-D" });   //use supervised descritization
+                //classifier.setOptions(new string[] { "-D" });     //use supervised descritization
+                classifier.setOptions(new string[] { "-K" });       //use kernel estimator
                 classifier.buildClassifier(train);
 
                 Evaluation eval = new Evaluation(train);
                 java.util.Random rand = new java.util.Random(1); 
                  
-                eval.crossValidateModel(classifier, train, 9, rand, new Object[] { } ); 
- 
+                //eval.crossValidateModel(classifier, train, 10, rand, new Object[] { } ); 
+                eval.evaluateModel(classifier, test);               
+
                 this.richTextBox3.Text = eval.toSummaryString("\nResults\n======\n", true);                
                 this.richTextBox3.Text += eval.toClassDetailsString(); 
                 this.richTextBox3.Text += eval.toMatrixString();
+
+                this.richTextBox3.Text += "\n\n\n"; 
+
+                Instances unlabeled = new Instances(
+                                    new BufferedReader(
+                                        new FileReader(testPath)));
+                unlabeled.setClassIndex(unlabeled.numAttributes() - 1); 
+
+                for (int i = 0; i < test.numInstances(); i++)
+                {
+                    double clsLabel = classifier.classifyInstance(test.instance(i));
+                    string classPredicted = unlabeled.classAttribute().value((int) clsLabel);   
+                    double[] distribution = classifier.distributionForInstance(test.instance(i));
+
+                    this.richTextBox3.Text += i.ToString() + "\t" + "Predicted result:" + classPredicted +"\t"; 
+                    for (int j = 0; j < distribution.Count(); j++)
+                    {
+                        this.richTextBox3.Text += distribution[j].ToString() + "\t";  
+                    }
+
+                    this.richTextBox3.Text += "\n"; 
+                }
+                
   
             }
             catch (java.lang.Exception ex)
