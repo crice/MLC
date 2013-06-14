@@ -28,6 +28,12 @@ namespace MLC
         private const string middlesBroughRawDataFormat = "Middlesboro";
         private const string middlesBroughPreferredFormat = "Middlesbrough";
 
+        public enum SoccerDataResultsWekaDistPos
+        {
+            D = 0,  //D=Draw
+            H = 1,  //H=Home
+            A = 2   //A=Away
+        }
 
         private enum SoccerDataResults
         {

@@ -155,6 +155,7 @@ namespace MLC
 
                 this.richTextBox3.Text += "\n\n\n"; 
 
+
                 Instances unlabeled = new Instances(
                                     new BufferedReader(
                                         new FileReader(testPath)));
@@ -162,20 +163,36 @@ namespace MLC
 
                 for (int i = 0; i < test.numInstances(); i++)
                 {
-                    double clsLabel = classifier.classifyInstance(test.instance(i));
-                    string classPredicted = unlabeled.classAttribute().value((int) clsLabel);   
+                    //Extract the predicted class result
+                    double dblPredictedClass = classifier.classifyInstance(test.instance(i));
+                    string strPredictedClass = unlabeled.classAttribute().value((int) dblPredictedClass);   
                     double[] distribution = classifier.distributionForInstance(test.instance(i));
 
-                    this.richTextBox3.Text += i.ToString() + "\t" + "Predicted result:" + classPredicted +"\t"; 
-                    for (int j = 0; j < distribution.Count(); j++)
+                    //Extract actual class result
+                    double dblActualClass = unlabeled.instance(i).classValue();
+                    string strActualClass = unlabeled.classAttribute().value((int)dblActualClass);
+
+                    double difference = 0.0;
+                    if (!dblActualClass.Equals(dblPredictedClass))
                     {
-                        this.richTextBox3.Text += distribution[j].ToString() + "\t";  
+                        double dblActualResult = GetActualValue(distribution, strActualClass);
+                        double dblPredictedResult = GetActualValue(distribution, strPredictedClass);
+
+                        difference = dblActualResult - dblPredictedResult;
+                        difference = Math.Abs(difference);
+                        difference = Math.Round(difference, 3);
                     }
 
+                    this.richTextBox3.Text += i.ToString() + "\t" +"ACTUAL: " +strActualClass +"\t" + "PREDICTED: " + strPredictedClass +"\t"; 
+                    for (int j = 0; j < distribution.Count(); j++)
+                    {
+                        double rounded = Math.Round(distribution[j], 3);
+                        this.richTextBox3.Text += rounded.ToString() + "\t";
+                    }
+
+                    this.richTextBox3.Text += difference.ToString(); 
                     this.richTextBox3.Text += "\n"; 
-                }
-                
-  
+                }                
             }
             catch (java.lang.Exception ex)
             {
@@ -184,6 +201,23 @@ namespace MLC
         }
 
 
+        public double GetActualValue(double[] distribution, string result)
+        {
+            if (result.Equals(Utility.SoccerDataResultsWekaDistPos.D.ToString()))
+            {
+                return distribution[(int)Utility.SoccerDataResultsWekaDistPos.D];
+            }
+            else if (result.Equals(Utility.SoccerDataResultsWekaDistPos.H.ToString()))
+            {
+                return distribution[(int)Utility.SoccerDataResultsWekaDistPos.H];
+            }
+            else if (result.Equals(Utility.SoccerDataResultsWekaDistPos.A.ToString()))
+            {
+                return distribution[(int)Utility.SoccerDataResultsWekaDistPos.A];
+            }
+            else
+                return 0.0;
+        }
 
         public void GetBayesNet(string trainPath, string testPath, int folds)
         {
