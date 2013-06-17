@@ -97,6 +97,7 @@
     <Content Include="lib\Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08.txt" />
     <Content Include="lib\Premiership13.txt" />
+    <None Include="lib\Prem12_11_10_09_08.arff" />
     <None Include="lib\Premiership_12to01_Train_3BookiesOnly.arff" />
     <None Include="lib\Premiership_13_ReqPred_3Bookies.arff" />
     <None Include="Properties\Settings.settings">

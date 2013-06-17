@@ -183,6 +183,11 @@ namespace MLC
                         difference = Math.Round(difference, 3);
                     }
 
+                    //Extract home/away team combo...
+                    string homeTeamStr = unlabeled.instance(i).stringValue(0);
+                    string awayTeamStr = unlabeled.instance(i).stringValue(1);
+                    string fixtures = ExtractInfoOnPreviousEncountersFromTrainingData(homeTeamStr, awayTeamStr);  
+
                     this.richTextBox3.Text += i.ToString() + "\t" +"ACTUAL: " +strActualClass +"\t" + "PREDICTED: " + strPredictedClass +"\t"; 
                     for (int j = 0; j < distribution.Count(); j++)
                     {
@@ -190,7 +195,9 @@ namespace MLC
                         this.richTextBox3.Text += rounded.ToString() + "\t";
                     }
 
-                    this.richTextBox3.Text += difference.ToString(); 
+                    this.richTextBox3.Text += difference.ToString() + "\t";
+                    this.richTextBox3.Text += fixtures;
+ 
                     this.richTextBox3.Text += "\n"; 
                 }                
             }
@@ -199,6 +206,32 @@ namespace MLC
                 ex.printStackTrace(); 
             }
         }
+
+
+
+        public string ExtractInfoOnPreviousEncountersFromTrainingData(string homeTeam, string awayTeam)
+        {
+            string fileName = @"../../lib/Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt";
+
+            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(fileName);
+
+            //Extact the home-team subset from all the data
+            List<SoccerData> homeTeamSubset = allSoccerData.FindAll(mc => mc.HomeTeam == homeTeam);
+
+            //Extract away-team subset from the home-team subset
+            List<SoccerData> awayTeamSubset = homeTeamSubset.FindAll(mc => mc.AwayTeam == awayTeam);
+
+            string fixtureInfo = string.Empty;
+            int count = 0;
+            foreach (SoccerData soccerData in awayTeamSubset)
+            {
+                count++;
+                fixtureInfo += soccerData.FullTimeResult; 
+            }
+
+            return count.ToString() + fixtureInfo;
+        }
+
 
 
         public double GetActualValue(double[] distribution, string result)
