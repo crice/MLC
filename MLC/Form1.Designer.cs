@@ -77,7 +77,7 @@
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(724, 432);
+            this.tabControl1.Size = new System.Drawing.Size(890, 432);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -328,7 +328,7 @@
             this.tabPage4.Controls.Add(this.button3);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(716, 406);
+            this.tabPage4.Size = new System.Drawing.Size(882, 406);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Weka via IKVM";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -347,7 +347,7 @@
             // 
             this.richTextBox3.Location = new System.Drawing.Point(28, 80);
             this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.Size = new System.Drawing.Size(663, 305);
+            this.richTextBox3.Size = new System.Drawing.Size(828, 305);
             this.richTextBox3.TabIndex = 1;
             this.richTextBox3.Text = "";
             // 
@@ -365,7 +365,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(756, 457);
+            this.ClientSize = new System.Drawing.Size(915, 457);
             this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
             this.Text = "MLC";

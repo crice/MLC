@@ -98,8 +98,13 @@
     <Content Include="lib\Premiership_12_11_10_09_08.txt" />
     <Content Include="lib\Premiership13.txt" />
     <None Include="lib\Prem12_11_10_09_08.arff" />
+    <None Include="lib\Prem12_11_10_09_With3Bookies.arff" />
     <None Include="lib\Premiership_12to01_Train_3BookiesOnly.arff" />
     <None Include="lib\Premiership_13_ReqPred_3Bookies.arff" />
+    <None Include="lib\Prem_12to08_Train_3Bookies.arff" />
+    <None Include="lib\Prem_12_11_10_09_08_07_With3Bookies.arff" />
+    <None Include="lib\Prem_12_11_10_With3Bookies.arff" />
+    <None Include="lib\Prem_Pre12_With3Bookies.arff" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

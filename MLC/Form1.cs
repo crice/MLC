@@ -40,7 +40,6 @@ namespace MLC
                 {
                     string fileName = openFileDialog.FileName;
                     List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
-                    //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(soccerData, outFileName);
                     Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT(soccerData, outFileName);   
 
                     richTextBox1.Text = "Text output to C:\\"; 
@@ -50,8 +49,6 @@ namespace MLC
                     string fileName = openFileDialog.FileName;
                     List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
                     Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(soccerData, outFileName);  
-                    //Utility.WriteOutSoccerDataToArffFormat(soccerData, outFileName);
-
                     richTextBox1.Text = "Text output to C:\\"; 
                 }
                 else if (checkBox2.Checked == true)
@@ -127,7 +124,12 @@ namespace MLC
             //string trainPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem12_11_10_09_08.arff";
             //string testPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem13ReqPred.arff";
 
-            string trainPath = @"../../lib/Premiership_12to01_Train_3BookiesOnly.arff";
+            //string trainPath = @"../../lib/Premiership_12to01_Train_3BookiesOnly.arff";
+            //string trainPath = @"../../lib/Prem_Pre12_With3Bookies.arff";
+            //string trainPath = @"../../lib/Prem_12_11_10_With3Bookies.arff";
+            //string trainPath = @"../../lib/Prem_12to08_Train_3Bookies.arff";
+            //string trainPath = @"../../lib/Prem_12_11_10_09_08_07_With3Bookies.arff";
+            string trainPath = @"../../lib/Prem12_11_10_09_With3Bookies.arff";
             string testPath = @"../../lib/Premiership_13_ReqPred_3Bookies.arff";
 
             try
@@ -139,8 +141,8 @@ namespace MLC
 
                 //Train classifier
                 Classifier classifier = new NaiveBayes();
-                //classifier.setOptions(new string[] { "-D" });     //use supervised descritization
-                classifier.setOptions(new string[] { "-K" });       //use kernel estimator
+                //classifier.setOptions(new string[] { "-D" });         //use supervised descritization
+                classifier.setOptions(new string[] { "-K" });           //use kernel estimator
                 classifier.buildClassifier(train);
 
                 Evaluation eval = new Evaluation(train);
@@ -159,8 +161,9 @@ namespace MLC
                 Instances unlabeled = new Instances(
                                     new BufferedReader(
                                         new FileReader(testPath)));
-                unlabeled.setClassIndex(unlabeled.numAttributes() - 1); 
+                unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
 
+                string outcome = "RIGHT";
                 for (int i = 0; i < test.numInstances(); i++)
                 {
                     //Extract the predicted class result
@@ -175,6 +178,7 @@ namespace MLC
                     double difference = 0.0;
                     if (!dblActualClass.Equals(dblPredictedClass))
                     {
+                        outcome = "WRONG";
                         double dblActualResult = GetActualValue(distribution, strActualClass);
                         double dblPredictedResult = GetActualValue(distribution, strPredictedClass);
 
@@ -182,6 +186,8 @@ namespace MLC
                         difference = Math.Abs(difference);
                         difference = Math.Round(difference, 3);
                     }
+                    else
+                        outcome = "RIGHT";
 
                     //Extract home/away team combo...
                     string homeTeamStr = unlabeled.instance(i).stringValue(0);
@@ -194,6 +200,11 @@ namespace MLC
                         double rounded = Math.Round(distribution[j], 3);
                         this.richTextBox3.Text += rounded.ToString() + "\t";
                     }
+
+                    this.richTextBox3.Text += outcome + "\t";
+
+                    if (difference <= 0.1)
+                        this.richTextBox3.Text += "VERY CLOSE" + "\t";
 
                     this.richTextBox3.Text += difference.ToString() + "\t";
                     this.richTextBox3.Text += fixtures;
