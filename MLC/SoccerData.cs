@@ -78,7 +78,7 @@ namespace MLC
         //Div,Date,HomeTeam,AwayTeam,FTHG,FTAG,FTR,HTHG,HTAG,HTR,Referee,HS,AS,HST,AST,HF,AF,HC,AC,HY,AY,HR,AR
 
         private string _division;                   //Div
-        private string _date;                       //Date
+        private DateTime _date;                     //Date
         private string _homeTeam;                   //HomeTeam
         private string _awayTeam;                   //AwayTeam
         private string _fullTimeHomeTeamGoals;      //FTHG
@@ -113,6 +113,11 @@ namespace MLC
         private string _williamHillDrawOdds;        //WHO
         private string _williamHillAwayWinOdds;     //WHA
 
+        //Derived metrics
+        private int _homeTeamRecentFormGoalsConceded;       //Recent form defined as the last 6 matches 
+        private int _awayTeamRecentFormGoalsScored;         //Recent form defined as the last 6 matches 
+        private int _matchRating;                           //Fixture goal superiority match rating
+
 
         #region Non-Statistical Properties
 
@@ -122,7 +127,7 @@ namespace MLC
             set { _division = value; }
         }
         
-        public string Date
+        public DateTime Date
         {
             get { return _date; }
             set { _date = value; }
@@ -330,6 +335,29 @@ namespace MLC
         {
             get { return _williamHillAwayWinOdds; }
             set { _williamHillAwayWinOdds = value; }
+        }
+
+        #endregion
+
+
+        #region Derived Properties
+
+        public int AwayTeamRecentFormGoalsScored
+        {
+            get { return _awayTeamRecentFormGoalsScored; }
+            set { _awayTeamRecentFormGoalsScored = value; }
+        }
+
+        public int HomeTeamRecentFormGoalsConceded
+        {
+            get { return _homeTeamRecentFormGoalsConceded; }
+            set { _homeTeamRecentFormGoalsConceded = value; }
+        }
+
+        public int MatchRating
+        {
+            get { return _matchRating; }
+            set { _matchRating = value; }
         }
 
         #endregion

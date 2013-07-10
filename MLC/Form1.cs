@@ -127,9 +127,9 @@ namespace MLC
             //string trainPath = @"../../lib/Premiership_12to01_Train_3BookiesOnly.arff";
             //string trainPath = @"../../lib/Prem_Pre12_With3Bookies.arff";
             //string trainPath = @"../../lib/Prem_12_11_10_With3Bookies.arff";
-            //string trainPath = @"../../lib/Prem_12to08_Train_3Bookies.arff";
+            string trainPath = @"../../lib/Prem_12to08_Train_3Bookies.arff";
             //string trainPath = @"../../lib/Prem_12_11_10_09_08_07_With3Bookies.arff";
-            string trainPath = @"../../lib/Prem12_11_10_09_With3Bookies.arff";
+            //string trainPath = @"../../lib/Prem12_11_10_09_With3Bookies.arff";
             string testPath = @"../../lib/Premiership_13_ReqPred_3Bookies.arff";
 
             try
@@ -222,7 +222,8 @@ namespace MLC
 
         public string ExtractInfoOnPreviousEncountersFromTrainingData(string homeTeam, string awayTeam)
         {
-            string fileName = @"../../lib/Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt";
+            //string fileName = @"../../lib/Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt";
+            string fileName = @"../../lib/Premiership_12_11_10_09_08.txt";
 
             List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(fileName);
 
@@ -242,6 +243,9 @@ namespace MLC
 
             return count.ToString() + fixtureInfo;
         }
+
+
+
 
 
 
@@ -366,9 +370,6 @@ namespace MLC
             GetRandomCommittee(trainPath, testPath, folds);
         
         }
-
-
-
 
 
 
