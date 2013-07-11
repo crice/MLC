@@ -30,6 +30,7 @@ namespace MLC
         //Browse button
         private void button1_Click(object sender, EventArgs e)
         {
+            bool includeHeader = true;
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -39,7 +40,7 @@ namespace MLC
                 if (checkBox1.Checked == true)
                 {
                     string fileName = openFileDialog.FileName;
-                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
+                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
                     Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT(soccerData, outFileName);   
 
                     richTextBox1.Text = "Text output to C:\\"; 
@@ -47,14 +48,14 @@ namespace MLC
                 else if (checkBox3.Checked == true)
                 {
                     string fileName = openFileDialog.FileName;
-                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
+                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
                     Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(soccerData, outFileName);  
                     richTextBox1.Text = "Text output to C:\\"; 
                 }
                 else if (checkBox2.Checked == true)
                 {
                     string fileName = openFileDialog.FileName;
-                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName);
+                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
                     Utility.WriteOutSoccerDataToLibsvmFormat(soccerData, outFileName);
 
                     richTextBox1.Text = "Text output to C:\\" + outFileName;
@@ -225,7 +226,8 @@ namespace MLC
             //string fileName = @"../../lib/Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt";
             string fileName = @"../../lib/Premiership_12_11_10_09_08.txt";
 
-            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(fileName);
+            bool includeHeader = false;
+            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
 
             //Extact the home-team subset from all the data
             List<SoccerData> homeTeamSubset = allSoccerData.FindAll(mc => mc.HomeTeam == homeTeam);

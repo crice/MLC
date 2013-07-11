@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using System.Xml; 
+using System.Xml;
+using System.Collections; 
 
 namespace MLC
 {
@@ -64,11 +65,12 @@ namespace MLC
         }
 
 
-        public static List<SoccerData> ReadSoccerDataFromFile(string fileName)
+        public static List<SoccerData> ReadSoccerDataFromFile(string fileName, bool includeHeader)
         {
             List<SoccerData> soccerDataList = new List<SoccerData>();
             SoccerData soccerData = null;
             string line = string.Empty;
+            int rowCount = 0;
 
             try
             {
@@ -79,49 +81,55 @@ namespace MLC
                         string[] split = line.Split(new char[] { COMMA });
                         soccerData = new SoccerData();
 
-                        soccerData.Division = split[(int)SoccerData.SoccerDataPosition.Division];
-                        string dateTime = split[(int)SoccerData.SoccerDataPosition.Date];
-                        soccerData.Date = Utility.ConvertStringToDateTime(dateTime);
-                        //soccerData.Date = split[(int)SoccerData.SoccerDataPosition.Date];
-                        soccerData.HomeTeam = split[(int)SoccerData.SoccerDataPosition.HomeTeam];
-                        soccerData.AwayTeam = split[(int)SoccerData.SoccerDataPosition.AwayTeam];
-                        soccerData.FullTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPosition.FullTimeHomeTeamGoals];
-                        soccerData.FullTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPosition.FullTimeAwayTeamGoals];
-                        soccerData.FullTimeResult = split[(int)SoccerData.SoccerDataPosition.FullTimeResult];
-                        soccerData.HalfTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPosition.HalfTimeHomeTeamGoals];
-                        soccerData.HalfTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPosition.HalfTimeAwayTeamGoals];
-                        soccerData.HalfTimeResult = split[(int)SoccerData.SoccerDataPosition.HalfTimeResult];
-                        soccerData.HomeTeamShots = split[(int)SoccerData.SoccerDataPosition.HomeTeamShots];
-                        soccerData.AwayTeamShots = split[(int)SoccerData.SoccerDataPosition.AwayTeamShots];
-                        soccerData.HomeTeamShotsOnTarget = split[(int)SoccerData.SoccerDataPosition.HomeTeamShotsOnTarget];
-                        soccerData.AwayTeamShotsOnTarget = split[(int)SoccerData.SoccerDataPosition.AwayTeamShotsOnTarget];
-                        soccerData.HomeTeamFoulsCommitted = split[(int)SoccerData.SoccerDataPosition.HomeTeamFoulsCommitted];
-                        soccerData.AwayTeamFoulsCommitted = split[(int)SoccerData.SoccerDataPosition.AwayTeamFoulsCommitted];
-                        soccerData.HomeTeamCorners = split[(int)SoccerData.SoccerDataPosition.HomeTeamCorners];
-                        soccerData.AwayTeamCorners = split[(int)SoccerData.SoccerDataPosition.AwayTeamCorners];
-                        soccerData.HomeTeamYellowCards = split[(int)SoccerData.SoccerDataPosition.HomeTeamYellowCards];
-                        soccerData.AwayTeamYellowCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamYellowCards];
-                        soccerData.HomeTeamRedCards = split[(int)SoccerData.SoccerDataPosition.HomeTeamRedCards];
-                        soccerData.AwayTeamRedCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamRedCards];
+                        if (!includeHeader & rowCount > HEADER_INDEX)
+                        {
 
-                        //***** BETTING *****
+                            soccerData.Division = split[(int)SoccerData.SoccerDataPosition.Division];
+                            string dateTime = split[(int)SoccerData.SoccerDataPosition.Date];
+                            soccerData.Date = Utility.ConvertStringToDateTime(dateTime);
+                            //soccerData.Date = split[(int)SoccerData.SoccerDataPosition.Date];
+                            soccerData.HomeTeam = split[(int)SoccerData.SoccerDataPosition.HomeTeam];
+                            soccerData.AwayTeam = split[(int)SoccerData.SoccerDataPosition.AwayTeam];
+                            soccerData.FullTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPosition.FullTimeHomeTeamGoals];
+                            soccerData.FullTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPosition.FullTimeAwayTeamGoals];
+                            soccerData.FullTimeResult = split[(int)SoccerData.SoccerDataPosition.FullTimeResult];
+                            soccerData.HalfTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPosition.HalfTimeHomeTeamGoals];
+                            soccerData.HalfTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPosition.HalfTimeAwayTeamGoals];
+                            soccerData.HalfTimeResult = split[(int)SoccerData.SoccerDataPosition.HalfTimeResult];
+                            soccerData.HomeTeamShots = split[(int)SoccerData.SoccerDataPosition.HomeTeamShots];
+                            soccerData.AwayTeamShots = split[(int)SoccerData.SoccerDataPosition.AwayTeamShots];
+                            soccerData.HomeTeamShotsOnTarget = split[(int)SoccerData.SoccerDataPosition.HomeTeamShotsOnTarget];
+                            soccerData.AwayTeamShotsOnTarget = split[(int)SoccerData.SoccerDataPosition.AwayTeamShotsOnTarget];
+                            soccerData.HomeTeamFoulsCommitted = split[(int)SoccerData.SoccerDataPosition.HomeTeamFoulsCommitted];
+                            soccerData.AwayTeamFoulsCommitted = split[(int)SoccerData.SoccerDataPosition.AwayTeamFoulsCommitted];
+                            soccerData.HomeTeamCorners = split[(int)SoccerData.SoccerDataPosition.HomeTeamCorners];
+                            soccerData.AwayTeamCorners = split[(int)SoccerData.SoccerDataPosition.AwayTeamCorners];
+                            soccerData.HomeTeamYellowCards = split[(int)SoccerData.SoccerDataPosition.HomeTeamYellowCards];
+                            soccerData.AwayTeamYellowCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamYellowCards];
+                            soccerData.HomeTeamRedCards = split[(int)SoccerData.SoccerDataPosition.HomeTeamRedCards];
+                            soccerData.AwayTeamRedCards = split[(int)SoccerData.SoccerDataPosition.AwayTeamRedCards];
 
-                        //Bet365
-                        soccerData.Bet365HomeWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365HomeWinOdds];
-                        soccerData.Bet365DrawOdds = split[(int)SoccerData.SoccerDataPosition.Bet365DrawOdds];
-                        soccerData.Bet365AwayWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365AwayWinOdds];
+                            //***** BETTING *****
 
-                        //Ladbrooks
-                        soccerData.LadbrooksHomeWinOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksHomeWinOdds];
-                        soccerData.LadbrooksDrawOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksDrawOdds];
-                        soccerData.LadbrooksAwayWinOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksAwayWinOdds];   
+                            //Bet365
+                            soccerData.Bet365HomeWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365HomeWinOdds];
+                            soccerData.Bet365DrawOdds = split[(int)SoccerData.SoccerDataPosition.Bet365DrawOdds];
+                            soccerData.Bet365AwayWinOdds = split[(int)SoccerData.SoccerDataPosition.Bet365AwayWinOdds];
 
-                        //William Hill
-                        soccerData.WilliamHillHomeWinOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillHomeWinOdds];
-                        soccerData.WilliamHillDrawOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillDrawOdds];
-                        soccerData.WilliamHillAwayWinOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillAwayWinOdds];   
+                            //Ladbrooks
+                            soccerData.LadbrooksHomeWinOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksHomeWinOdds];
+                            soccerData.LadbrooksDrawOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksDrawOdds];
+                            soccerData.LadbrooksAwayWinOdds = split[(int)SoccerData.SoccerDataPosition.LadbrooksAwayWinOdds];
 
-                        soccerDataList.Add(soccerData);
+                            //William Hill
+                            soccerData.WilliamHillHomeWinOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillHomeWinOdds];
+                            soccerData.WilliamHillDrawOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillDrawOdds];
+                            soccerData.WilliamHillAwayWinOdds = split[(int)SoccerData.SoccerDataPosition.WilliamHillAwayWinOdds];
+
+                            soccerDataList.Add(soccerData);
+                        }
+
+                        rowCount++;
                     }
                 }
             }
@@ -771,8 +779,10 @@ namespace MLC
         /// <returns></returns>
         public static List<SoccerData> GetFixtureMatchRatingForAll(string fileName)
         {
-            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(PREM_13_DATA);
+            bool includeHeader = false;
+            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
             List<SoccerData> allSoccerDataOrdered = allSoccerData.OrderBy(mc => mc.Date).ToList();    //Earliest fixture at the top
+
 
             foreach (SoccerData soccerData in allSoccerDataOrdered)
             {
@@ -781,10 +791,10 @@ namespace MLC
                 DateTime dtFixture = soccerData.Date;
  
                 //For the home team obtain all the fixtures before this point
-                List<SoccerData> allHomeTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerDataOrdered, dtFixture, homeTeam);
+                List<SoccerData> allHomeTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerData, dtFixture, homeTeam);
                 int homeTeamGoalSuperiority = GetGoalSuperiorityRating(allHomeTeamFixturesBeforePoint, homeTeam); 
 
-                List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerDataOrdered, dtFixture, awayTeam);
+                List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerData, dtFixture, awayTeam);
                 int awayTeamGoalSuperiority = GetGoalSuperiorityRating(allAwayTeamFixturesBeforePoint, awayTeam);
 
                 soccerData.MatchRating = homeTeamGoalSuperiority - awayTeamGoalSuperiority; 
@@ -817,8 +827,23 @@ namespace MLC
                 }
             }
 
-            return earlierSoccerData; 
+            if (earlierSoccerData.Count > RECENT_FORM)            
+                return SortAndTakeRecentFormAmount(earlierSoccerData);            
+            else
+                return earlierSoccerData; 
         }
+
+        /// <summary>
+        /// Sorts by most recent at the top & least recent at the bottom & takes the top recent-form amount (which is usually 6)
+        /// </summary>
+        /// <param name="soccerData"></param>
+        /// <returns></returns>
+        private static List<SoccerData> SortAndTakeRecentFormAmount(List<SoccerData> soccerData)
+        {
+            List<SoccerData> sortedSocccerData = soccerData.OrderByDescending(mc => mc.Date).ToList();
+            return sortedSocccerData.Take(RECENT_FORM).ToList();  
+        }
+
 
         /// <summary>
         /// 
@@ -863,7 +888,7 @@ namespace MLC
         {
             int result = DateTime.Compare(dateTime1, dateTime2);
 
-            if (result <= 0)
+            if (result < 0)
                 return true;
             else
                 return false;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 namespace MLC
 {
@@ -9,8 +10,10 @@ namespace MLC
     /// Models the data from here:
     /// http://www.football-data.co.uk/data.php
     /// </summary>
-    public class SoccerData
+    public class SoccerData : IEnumerable
     {
+
+        public IEnumerator GetEnumerator() { return GetEnumerator(); }
 
         public enum SoccerDataPosition
         {
