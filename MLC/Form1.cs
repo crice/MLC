@@ -12,7 +12,8 @@ using SVM;
 using weka.core;
 using java.io;
 using weka.classifiers;
-using weka.classifiers.bayes;  
+using weka.classifiers.bayes;
+using weka.core.converters;  
 
 
 namespace MLC
@@ -367,10 +368,47 @@ namespace MLC
             string testPath = "C:/WekaModelSaves/PreimiershipRawData/CSV/Prem13ReqPred.arff";
             int folds = 10;
 
-            //GetBayesNet(trainPath, testPath, folds);
 
             GetRandomCommittee(trainPath, testPath, folds);
         
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {            
+            //String filePath = @"../../lib/Premiership13.txt";
+            String filePath = @"../../lib/SoccerDataPlusMatchRating.txt";
+            java.io.File file = new java.io.File(filePath);  
+
+            //Load CSV
+            CSVLoader loader = new CSVLoader();
+            loader.setSource(file);           
+            Instances data = loader.getDataSet();
+            data.setClassIndex(5);
+
+            Classifier classifier = new NaiveBayes();
+            //classifier.setOptions(new string[] { "-D" });         //use supervised descritization
+            classifier.setOptions(new string[] { "-K" });           //use kernel estimator
+            classifier.buildClassifier(data);
+
+            Evaluation eval = new Evaluation(data);
+            java.util.Random rand = new java.util.Random(1);
+            
+            eval.crossValidateModel(classifier, data, 10, rand, new Object[] { } ); 
+            //eval.evaluateModel(classifier, test);
+            eval.evaluateModel(classifier, data); 
+
+            this.richTextBox3.Text = eval.toSummaryString("\nResults\n======\n", true);
+            this.richTextBox3.Text += eval.toClassDetailsString();
+            this.richTextBox3.Text += eval.toMatrixString();
+            
+
+            //Save CSV
+            //String fileOut = @"../../lib/PREM13.arff";
+            //ArffSaver saver = new ArffSaver();
+            //saver.setInstances(data);
+            //saver.setFile(new java.io.File(fileOut));
+            //saver.writeBatch();  
+
         }
 
 

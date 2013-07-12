@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B7BD5BB8-D6CA-445B-9741-32C22718ACF7}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MLC</RootNamespace>
     <AssemblyName>MLC</AssemblyName>
@@ -39,6 +39,9 @@
   <ItemGroup>
     <Reference Include="IKVM.OpenJDK.Core">
       <HintPath>..\..\..\..\ikvm\ikvmbin-7.2.4630.5\ikvm-7.2.4630.5\bin\IKVM.OpenJDK.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="IKVM.OpenJDK.XML.Parse">
+      <HintPath>..\..\..\..\ikvm\ikvmbin-7.2.4630.5\ikvm-7.2.4630.5\bin\IKVM.OpenJDK.XML.Parse.dll</HintPath>
     </Reference>
     <Reference Include="nunit.core">
       <HintPath>..\..\..\..\Program Files (x86)\NUnit 2.6.1\bin\lib\nunit.core.dll</HintPath>
@@ -110,6 +113,7 @@
     <Content Include="lib\Premiership_13_12_11_10_09.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08.txt" />
+    <None Include="lib\PREM13.arff" />
     <Content Include="lib\Premiership13.txt" />
     <None Include="lib\Prem12_11_10_09_08.arff" />
     <None Include="lib\Prem12_11_10_09_With3Bookies.arff" />
@@ -130,6 +134,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\SoccerDataMinusMatchRating.txt" />
+    <Content Include="lib\SoccerDataPlusMatchRating.txt" />
     <Content Include="Premiership.xml">
       <SubType>Designer</SubType>
     </Content>
