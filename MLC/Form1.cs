@@ -31,7 +31,7 @@ namespace MLC
         //Browse button
         private void button1_Click(object sender, EventArgs e)
         {
-            bool includeHeader = true;
+            bool includeHeader = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -61,6 +61,15 @@ namespace MLC
 
                     richTextBox1.Text = "Text output to C:\\" + outFileName;
                 }
+                else if (checkBox4.Checked == true)
+                {
+                    string fileName = openFileDialog.FileName;
+                    List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
+                    List<SoccerData> soccerDataPlusGoalSuperiority = Utility.AddGoalSuperiority(soccerData);
+                    Utility.WriteMatchRatingOutToFile(soccerDataPlusGoalSuperiority, outFileName);  
+
+                    richTextBox1.Text = "Text output to C:\\" + outFileName;  
+                }
 
             }
         }
@@ -80,6 +89,10 @@ namespace MLC
             button1.Enabled = true;
         }
 
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = true;
+        }
 
         //SVM - M. Johnson
         private void button2_Click(object sender, EventArgs e)
@@ -410,6 +423,8 @@ namespace MLC
             //saver.writeBatch();  
 
         }
+
+
 
 
 

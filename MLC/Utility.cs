@@ -24,6 +24,7 @@ namespace MLC
         private const string HISTORICAL_DATA_FILENAME = @"../../lib/Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt";
         private const string PREM_13_DATA = @"../../lib/Premiership13.txt";
 
+        private const string HEADER1 = "Date, HomeTeam, AwayTeam, FTHomeTeamGoals, FTAwayTeamGoals, FixtureMatchRating, FTResult";
 
         //Arrives in an akward format.
         private const string nottingHamForestRawDataFormat = "Nott'mForest";
@@ -742,31 +743,8 @@ namespace MLC
         }
 
 
-        /// <summary>
-        /// For a given team calculates the "recent-form" goal superiorty rating (goals scored - goals conceded)
-        /// Recent form of a team is considered to be the last 6 games (home/away) assuming the data is available...
-        /// The underlying assumption is: Teams that score more goals than they concede over several previous matches 
-        /// are more likely to win their next game...
-        /// </summary>
-        /// <param name="teamName"></param>
-        /// <returns></returns>
-        //public static int GetGoalSuperiorityRating(List<SoccerData> soccerDataOrdered, string teamName)
-        //{
-        //    //int goalsConceded = 0;
-        //    //int goalsScored = 0;
-        //    int goalSuperiortyRating = 0;            
-            
-        //    //Extact the home-team subset from all the data
-        //    //List<SoccerData> homeTeamSubset = allSoccerData.FindAll(mc => mc.HomeTeam == teamName);
-        //    //List<SoccerData> awayTeamSubset = allSoccerData.FindAll(mc => mc.AwayTeam == teamName);
 
-        //    List<SoccerData> allFixtures = new List<SoccerData>();
-        //    //allFixtures.AddRange(homeTeamSubset);
-        //    //allFixtures.AddRange(awayTeamSubset); 
-
-        //    return goalSuperiortyRating; 
-
-        //}
+        #region Goal Superiority Stuff
 
 
         /// <summary>
@@ -775,7 +753,7 @@ namespace MLC
         /// The underlying assumption is: Teams that score more goals than they concede over several previous matches 
         /// are more likely to win their next game... 
         /// </summary>
-        /// <param name="fileName"></param>
+        /// <param name="fileName">Full path to the file</param>
         /// <returns></returns>
         public static List<SoccerData> GetFixtureMatchRatingForAll(string fileName)
         {
@@ -798,6 +776,38 @@ namespace MLC
                 int awayTeamGoalSuperiority = GetGoalSuperiorityRating(allAwayTeamFixturesBeforePoint, awayTeam);
 
                 soccerData.MatchRating = homeTeamGoalSuperiority - awayTeamGoalSuperiority; 
+            }
+
+            return allSoccerDataOrdered;
+        }
+
+        /// <summary>
+        /// For an entire ensemble calculates the "recent-form" goal superiorty rating (goals scored - goals conceded)
+        /// Recent form of a team is considered to be the last 6 games (home/away) assuming the data is available of course...
+        /// The underlying assumption is: Teams that score more goals than they concede over several previous matches 
+        /// are more likely to win their next game... 
+        /// </summary>
+        /// <param name="fileName">List soccer data</param>
+        /// <returns></returns>
+        public static List<SoccerData> GetFixtureMatchRatingForAll(List<SoccerData> soccerDataList)
+        {
+            bool includeHeader = false;
+            List<SoccerData> allSoccerDataOrdered = soccerDataList.OrderBy(mc => mc.Date).ToList();    //Earliest fixture at the top
+
+            foreach (SoccerData soccerData in allSoccerDataOrdered)
+            {
+                string homeTeam = soccerData.HomeTeam;
+                string awayTeam = soccerData.AwayTeam;
+                DateTime dtFixture = soccerData.Date;
+
+                //For the home team obtain all the fixtures before this point
+                List<SoccerData> allHomeTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(soccerDataList, dtFixture, homeTeam);
+                int homeTeamGoalSuperiority = GetGoalSuperiorityRating(allHomeTeamFixturesBeforePoint, homeTeam);
+
+                List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(soccerDataList, dtFixture, awayTeam);
+                int awayTeamGoalSuperiority = GetGoalSuperiorityRating(allAwayTeamFixturesBeforePoint, awayTeam);
+
+                soccerData.MatchRating = homeTeamGoalSuperiority - awayTeamGoalSuperiority;
             }
 
             return allSoccerDataOrdered;
@@ -895,42 +905,6 @@ namespace MLC
         }
 
 
-        /// <summary>
-        /// For an entire ensemble calculates the "recent-form" goal superiorty rating (goals scored - goals conceded)
-        /// Recent form of a team is considered to be the last 6 games (home/away) assuming the data is available of course...
-        /// The underlying assumption is: Teams that score more goals than they concede over several previous matches 
-        /// are more likely to win their next game... 
-        /// </summary>
-        /// <param name="teamName"></param>
-        /// <returns></returns>
-        //public static int GetGoalSuperiorityRatingForAll(string teamName)
-        //{
-        //    //int goalsConceded = 0;
-        //    //int goalsScored = 0;
-        //    int goalSuperiortyRating = 0;
-
-        //    //Load up all the previous years data
-        //    List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(PREM_13_DATA);
-        //    List<SoccerData> allSoccerDataOrdered = allSoccerData.OrderBy(mc => mc.Date).ToList();    //Earliest fixture at the top
-
-        //    //Extact the home-team subset from all the data
-        //    foreach(SoccerData soccerData in allSoccerDataOrdered)
-        //    {
-        //        string homeTeam = soccerData.HomeTeam;
-        //        string awayTeam = soccerData.AwayTeam;
-        //        DateTime dt = soccerData.Date;
-
-        //        soccerData.MatchRating = GetGoalSuperiorityRating(soccerData, homeTeam);
-        //    }
-
-        //    //List<SoccerData> allFixtures = new List<SoccerData>();
-        //    //allFixtures.AddRange(homeTeamSubset);
-        //    //allFixtures.AddRange(awayTeamSubset);
-
-        //    return goalSuperiortyRating;
-
-        //}
-
 
         /// <summary>
         /// Converts a string timestamp of the form: DD/MM/YYYY to the DateTime equivalent
@@ -954,5 +928,57 @@ namespace MLC
 
         }
 
+        #endregion
+
+
+        internal static List<SoccerData> AddGoalSuperiority(List<SoccerData> soccerData)
+        {
+            List<SoccerData> soccerDataPlusGoalSuperiority = new List<SoccerData>(); 
+
+            //Extract the unique years contains in the data
+            List<int> distinctYearList = soccerData.Select(mc => mc.Date.Year).Distinct().ToList();
+            var orderedDistinctYearList = distinctYearList.OrderByDescending(mc => mc).ToList();        //Most recent at list-top
+
+            //Cycle thru these seasons (years) and extract all fixtures for that year
+            //Then append the goals superiority for that particular season (year)
+            //Then add this data to the return object.
+            foreach (int year in orderedDistinctYearList)
+            {
+                List<SoccerData> yearSoccerData = soccerData.Where(mc => mc.Date.Year == year).ToList();
+                List<SoccerData> soccerDataPlusGS = GetFixtureMatchRatingForAll(yearSoccerData);
+                soccerDataPlusGoalSuperiority.AddRange(soccerDataPlusGS);   
+            }
+
+            return soccerDataPlusGoalSuperiority;             
+        }
+
+
+        //Tuned for minimal output and match rating statistic
+        public static void WriteMatchRatingOutToFile(List<SoccerData> soccerDataList, string outFilePathAndName)
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter(outFilePathAndName);
+            
+            file.WriteLine(HEADER1);
+
+            foreach (SoccerData soccerData in soccerDataList)
+            {
+                file.Write(soccerData.Date.ToShortDateString());
+                file.Write(COMMA);
+                file.Write(soccerData.HomeTeam);
+                file.Write(COMMA);
+                file.Write(soccerData.AwayTeam);
+                file.Write(COMMA);
+                file.Write(soccerData.FullTimeHomeTeamGoals);
+                file.Write(COMMA);
+                file.Write(soccerData.FullTimeAwayTeamGoals);
+                file.Write(COMMA);
+                file.Write(soccerData.MatchRating.ToString());  
+                file.Write(COMMA);
+                file.WriteLine(soccerData.FullTimeResult);                             
+            }
+
+            file.Close();
+
+        }
     }
 }
