@@ -113,8 +113,9 @@
     <Content Include="lib\Premiership_13_12_11_10_09.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08.txt" />
+    <None Include="lib\Prem12to08With3BookiesPlusMatchRating_Training.arff" />
     <None Include="lib\PREM13.arff" />
-    <Content Include="lib\Premiership13.txt" />
+    <Content Include="lib\Premiership2013.txt" />
     <None Include="lib\Prem12_11_10_09_08.arff" />
     <None Include="lib\Prem12_11_10_09_With3Bookies.arff" />
     <Content Include="lib\Premiership2011.txt" />
@@ -128,6 +129,7 @@
     <Content Include="lib\Premiership2003.txt" />
     <Content Include="lib\Premiership2002.txt" />
     <Content Include="lib\Premiership2001.txt" />
+    <None Include="lib\Prem13With3BookiesPlusMatchRating_Test.arff" />
     <None Include="lib\Premiership_12to01_Train_3BookiesOnly.arff" />
     <None Include="lib\Premiership_13_ReqPred_3Bookies.arff" />
     <None Include="lib\Prem_12to08_Train_3Bookies.arff" />

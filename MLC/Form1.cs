@@ -424,6 +424,30 @@ namespace MLC
 
         }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+           
+            //Training data
+            string[] trainingFiles = new string[] { @"../../lib/Premiership2012.txt", @"../../lib/Premiership2011.txt", 
+                @"../../lib/Premiership2010.txt", @"../../lib/Premiership2009.txt", @"../../lib/Premiership2009.txt" };
+
+            //Test data
+            string[] testFiles = new string[] { @"../../lib/Premiership2013.txt" };
+
+
+            List<SoccerData> allSoccerData = new List<SoccerData>();
+
+            foreach (string fileName in trainingFiles)
+            {
+                List<SoccerData> seasonSoccerData = Utility.GetFixtureMatchRatingForAll(fileName);
+                allSoccerData.AddRange(seasonSoccerData);  
+            }
+
+            //Convert to arff format
+            Utility.WriteOutSoccerDataToArffFormat(allSoccerData, @"../../lib/Prem12to08With3BookiesPlusMatchRating_Training.arff"); 
+            //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, @"../../lib/Prem13With3BookiesPlusMatchRating_Test.arff"); 
+        }
+
 
 
 

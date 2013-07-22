@@ -74,7 +74,16 @@ namespace MLC
             HomeTeamYellowCards = 19,
             AwayTeamYellowCards = 20,
             HomeTeamRedCards = 21,
-            AwayTeamRedCards = 22
+            AwayTeamRedCards = 22,
+            Bet365HomeWinOdds = 23,
+            Bet365DrawOdds = 24,
+            Bet365AwayWinOdds = 25,
+            LadbrooksHomeWinOdds = 35,
+            LadbrooksDrawOdds = 36,
+            LadbrooksAwayWinOdds = 37,
+            WilliamHillHomeWinOdds = 41,
+            WilliamHillDrawOdds = 42,
+            WilliamHillAwayWinOdds = 43
         }
 
         //HomeTeam,AwayTeam,FTHomeTeamGoals,FTAwayTeamGoals,HomeTimeHomeTeamGoals,HalfTimeAwayTeamGoals,HalfTimeTResult,HomeTeamShots,AwayTeamShots,HomeTeamShotsonTarget,AwayTeamShotsonTarget,HomeTeamFoulsCommitted,AwayTeamFoulsCommitted,HomeTeamCorners,AwayTeamCorners,HometeamYellowCards,AwayTeamYellowCards,HomeTeamRedCards,AwayTeamRedCards,FTResult
