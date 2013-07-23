@@ -444,8 +444,9 @@ namespace MLC
             }
 
             //Convert to arff format
-            Utility.WriteOutSoccerDataToArffFormat(allSoccerData, @"../../lib/Prem12to08With3BookiesPlusMatchRating_Training.arff"); 
-            //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, @"../../lib/Prem13With3BookiesPlusMatchRating_Test.arff"); 
+            //Utility.WriteOutSoccerDataToArffFormat(allSoccerData, @"../../lib/Prem12to08With3BookiesPlusMatchRating_Training.arff"); 
+            //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, @"../../lib/Prem13With3BookiesWithStrictMatchRatingPlusFairOdds_Test.arff"); 
+            Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, @"../../lib/Prem12to08WithQuestionsWith3BookiesStrictMatchRatingPlusFairOdds_Training.arff"); 
         }
 
 

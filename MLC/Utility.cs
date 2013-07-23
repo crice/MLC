@@ -19,6 +19,8 @@ namespace MLC
         private const string QUESTION_MARK = "?";
 
         private const int RECENT_FORM = 6;      //the last 6 games
+        private const int TWO = 2;
+        private const double ONE_HUNDRED = 100.0;
 
         private const string PATH = @"..\..\Premiership.xml";
         private const string HISTORICAL_DATA_FILENAME = @"../../lib/Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt";
@@ -646,6 +648,10 @@ namespace MLC
             file.WriteLine("@attribute \'WilliamHillAwayWinOdds\' numeric");
 
             file.WriteLine("@attribute \'MatchRating\' numeric");
+
+            file.WriteLine("@attribute \'HomeWinFairOdds\' numeric");
+            file.WriteLine("@attribute \'DrawFairOdds\' numeric");
+            file.WriteLine("@attribute \'AwayWinFairOdds\' numeric"); 
  
             file.WriteLine("@attribute \'class\' { D,H,A }");
             file.WriteLine("@data");
@@ -732,7 +738,26 @@ namespace MLC
                 else
                     file.Write(QUESTION_MARK + COMMA);
 
-                file.Write(soccerData.MatchRating + COMMA); 
+                file.Write(soccerData.MatchRating + COMMA);
+
+                if (!soccerData.MatchRating.Equals(QUESTION_MARK))
+                {
+                    int matchRating = Int32.Parse(soccerData.MatchRating);
+
+                    soccerData.HomeWinFairOdds  = Utility.GetHomeWinFairOdds(matchRating);
+                    soccerData.DrawFairOdds = Utility.GetDrawFairOdds(matchRating);
+                    soccerData.AwayWinFairOdds = Utility.GetAwayWinFairOdds(matchRating);
+
+                    file.Write(soccerData.HomeWinFairOdds.ToString() + COMMA);
+                    file.Write(soccerData.DrawFairOdds.ToString() + COMMA);
+                    file.Write(soccerData.AwayWinFairOdds.ToString() + COMMA); 
+                }
+                else
+                {
+                    file.Write(QUESTION_MARK + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
+                    file.Write(QUESTION_MARK + COMMA); 
+                }
 
                 file.WriteLine(soccerData.FullTimeResult);
             }
@@ -869,6 +894,7 @@ namespace MLC
         /// <summary>
         /// For an entire ensemble calculates the "recent-form" goal superiorty rating (goals scored - goals conceded)
         /// Recent form of a team is considered to be the last 6 games (home/away) assuming the data is available of course...
+        /// Both teams *must* have played the "recent-form" amount of fixtures. Otherwise, it cannot be calculated... 
         /// The underlying assumption is: Teams that score more goals than they concede over several previous matches 
         /// are more likely to win their next game... 
         /// </summary>
@@ -887,14 +913,38 @@ namespace MLC
                 string awayTeam = soccerData.AwayTeam; 
                 DateTime dtFixture = soccerData.Date;
  
-                //For the home team obtain all the fixtures before this point
+                //For the home team obtain all the fixtures before this point (max of 6 returned)
                 List<SoccerData> allHomeTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerData, dtFixture, homeTeam);
-                int homeTeamGoalSuperiority = GetGoalSuperiorityRating(allHomeTeamFixturesBeforePoint, homeTeam); 
-
                 List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerData, dtFixture, awayTeam);
-                int awayTeamGoalSuperiority = GetGoalSuperiorityRating(allAwayTeamFixturesBeforePoint, awayTeam);
 
-                soccerData.MatchRating = homeTeamGoalSuperiority - awayTeamGoalSuperiority; 
+                string homeTeamGoalSuperiority = string.Empty;
+                string awayTeamGoalSuperiority = string.Empty;
+
+                if(allHomeTeamFixturesBeforePoint.Count < RECENT_FORM)
+                {
+                    //Cannot be calculated as its less that 6 matches ie "recent form" is not yet reached
+                    homeTeamGoalSuperiority = QUESTION_MARK; 
+                }
+                else
+                    homeTeamGoalSuperiority = GetGoalSuperiorityRating(allHomeTeamFixturesBeforePoint, homeTeam).ToString();
+
+                
+
+                if (allAwayTeamFixturesBeforePoint.Count < RECENT_FORM)
+                {
+                    //Cannot be calculated as its less that 6 matches ie "recent form" is not yet reached
+                    awayTeamGoalSuperiority = QUESTION_MARK;
+                }
+                else
+                    awayTeamGoalSuperiority = GetGoalSuperiorityRating(allAwayTeamFixturesBeforePoint, awayTeam).ToString();
+
+                if (homeTeamGoalSuperiority.Equals(QUESTION_MARK) || awayTeamGoalSuperiority.Equals(QUESTION_MARK))
+                    soccerData.MatchRating = QUESTION_MARK;
+                else
+                {
+                    int temp = Int32.Parse(homeTeamGoalSuperiority) - Int32.Parse(awayTeamGoalSuperiority);
+                    soccerData.MatchRating = temp.ToString();
+                }
             }
 
             return allSoccerDataOrdered;
@@ -926,7 +976,7 @@ namespace MLC
                 List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(soccerDataList, dtFixture, awayTeam);
                 int awayTeamGoalSuperiority = GetGoalSuperiorityRating(allAwayTeamFixturesBeforePoint, awayTeam);
 
-                soccerData.MatchRating = homeTeamGoalSuperiority - awayTeamGoalSuperiority;
+                soccerData.MatchRating = (homeTeamGoalSuperiority - awayTeamGoalSuperiority).ToString();
             }
 
             return allSoccerDataOrdered;
@@ -934,7 +984,7 @@ namespace MLC
 
 
         /// <summary>
-        /// Returns all the home/away fixtures before or at a certain time period for a particular team.
+        /// Returns a maximum of recent-form amount of the home/away fixtures before or at a certain time period for a particular team.
         /// </summary>
         /// <param name="soccerDataOrderedList"></param>
         /// <param name="dt">The datetime before or at which you want the fixtures</param>
@@ -1099,5 +1149,36 @@ namespace MLC
             file.Close();
 
         }
+
+
+        public static double GetHomeWinFairOdds(int matchRating)
+        {
+            double dblMatchRating = (double)matchRating; 
+            double ans = (1.56 * matchRating) + 46.47;
+
+            return Math.Round((ONE_HUNDRED / ans), TWO);
+        }
+
+
+        public static double GetDrawFairOdds(int matchRating)
+        {
+            double dblMatchRating = (double) matchRating;
+            double ans =  -(0.03 * (dblMatchRating * dblMatchRating)) - (0.29 * dblMatchRating) + 29.48;
+
+            return Math.Round((ONE_HUNDRED / ans), TWO);
+        }
+
+
+        public static double GetAwayWinFairOdds(int matchRating)
+        {
+            double dblMatchRating = (double) matchRating;
+            double ans =  (0.03 * (dblMatchRating * dblMatchRating)) - (1.27 * matchRating) + 23.65;
+
+            return Math.Round((ONE_HUNDRED / ans), TWO);
+        }
+
+
+
+
     }
 }

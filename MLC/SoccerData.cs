@@ -128,7 +128,11 @@ namespace MLC
         //Derived metrics
         private int _homeTeamRecentFormGoalsConceded;       //Recent form defined as the last 6 matches 
         private int _awayTeamRecentFormGoalsScored;         //Recent form defined as the last 6 matches 
-        private int _matchRating;                           //Fixture goal superiority match rating
+        private string _matchRating;                        //Fixture goal superiority match rating
+
+        private double _homeWinFairOdds;
+        private double _drawFairOdds;
+        private double _awayWinFairOdds;
 
 
         #region Non-Statistical Properties
@@ -366,10 +370,28 @@ namespace MLC
             set { _homeTeamRecentFormGoalsConceded = value; }
         }
 
-        public int MatchRating
+        public string MatchRating
         {
             get { return _matchRating; }
             set { _matchRating = value; }
+        }
+
+        public double HomeWinFairOdds
+        {
+            get { return _homeWinFairOdds; }
+            set { _homeWinFairOdds = value; }
+        }
+
+        public double DrawFairOdds
+        {
+            get { return _drawFairOdds; }
+            set { _drawFairOdds = value; }
+        }
+
+        public double AwayWinFairOdds
+        {
+            get { return _awayWinFairOdds; }
+            set { _awayWinFairOdds = value; }
         }
 
         #endregion
