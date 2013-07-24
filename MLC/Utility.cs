@@ -20,9 +20,10 @@ namespace MLC
 
         private const int RECENT_FORM = 6;      //the last 6 games
         private const int TWO = 2;
+        private const int ZERO = 0;
         private const double ONE_HUNDRED = 100.0;
 
-        private const string PATH = @"..\..\Premiership.xml";
+        private const string PATH_TO_TEAMS_DATA = @"..\..\Premiership.xml";
         private const string HISTORICAL_DATA_FILENAME = @"../../lib/Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt";
         private const string PREM_13_DATA = @"../../lib/Premiership13.txt";
 
@@ -49,11 +50,18 @@ namespace MLC
             A = 3   //A=Away win
         }
 
+        public enum PremierLeagueScoring
+        {
+            LOSE = 0,
+            DRAW = 1,
+            WIN = 3
+        }
+
 
         public static List<string> ReadXmlFile()
         {
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(PATH);
+            xmlDoc.Load(PATH_TO_TEAMS_DATA);
             XmlNodeList nodeList = xmlDoc.GetElementsByTagName("team");
 
             List<string> teams = new List<String>();
@@ -701,40 +709,61 @@ namespace MLC
                 //***** BETTING *****
 
                 //Bet365
-                file.Write(soccerData.Bet365HomeWinOdds + COMMA);
-                file.Write(soccerData.Bet365DrawOdds + COMMA);
-                file.Write(soccerData.Bet365AwayWinOdds + COMMA);
+                //file.Write(soccerData.Bet365HomeWinOdds + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+                //file.Write(soccerData.Bet365DrawOdds + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
+                //file.Write(soccerData.Bet365AwayWinOdds + COMMA);
+                file.Write(QUESTION_MARK + COMMA);
 
                 //Ladbrooks
                 if (!soccerData.LadbrooksHomeWinOdds.Equals(NOTHING))
-                    file.Write(soccerData.LadbrooksHomeWinOdds + COMMA);
+                {
+                    //file.Write(soccerData.LadbrooksHomeWinOdds + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
+                }
                 else
                     file.Write(QUESTION_MARK + COMMA);
 
                 if (!soccerData.LadbrooksDrawOdds.Equals(NOTHING))
-                    file.Write(soccerData.LadbrooksDrawOdds + COMMA);
+                {
+                    //file.Write(soccerData.LadbrooksDrawOdds + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
+                }
                 else
                     file.Write(QUESTION_MARK + COMMA);
 
                 if (!soccerData.LadbrooksAwayWinOdds.Equals(NOTHING))
-                    file.Write(soccerData.LadbrooksAwayWinOdds + COMMA);
+                {
+                    //file.Write(soccerData.LadbrooksAwayWinOdds + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
+                }
                 else
                     file.Write(QUESTION_MARK + COMMA);
 
 
                 //WilliamHill
                 if (!soccerData.WilliamHillHomeWinOdds.Equals(NOTHING))
-                    file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
+                {
+                    //file.Write(soccerData.WilliamHillHomeWinOdds + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
+                }
                 else
                     file.Write(QUESTION_MARK + COMMA);
 
                 if (!soccerData.WilliamHillDrawOdds.Equals(NOTHING))
-                    file.Write(soccerData.WilliamHillDrawOdds + COMMA);
+                {
+                    //file.Write(soccerData.WilliamHillDrawOdds + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
+                }
                 else
                     file.Write(QUESTION_MARK + COMMA);
 
                 if (!soccerData.WilliamHillAwayWinOdds.Equals(NOTHING))
-                    file.Write(soccerData.WilliamHillAwayWinOdds + COMMA);
+                {
+                    //file.Write(soccerData.WilliamHillAwayWinOdds + COMMA);
+                    file.Write(QUESTION_MARK + COMMA);
+                }
                 else
                     file.Write(QUESTION_MARK + COMMA);
 
@@ -885,6 +914,56 @@ namespace MLC
             string concat = String.Join<string>(COMMASPACE, sortedList);        //CSV format            
             return "{ " + concat + " }";                                        //Arff format
         }
+
+
+        #region League Score Stuff
+
+
+        /// <summary>
+        /// Populates a suitable container with league scores.
+        /// </summary>
+        /// <param name="allSoccerData"></param>
+        /// <returns></returns>
+        public static List<SoccerDataLeagueScore> GetLeagueScoreForAll(List<SoccerData> allSoccerData)
+        {
+            List<SoccerData> allSoccerDataOrdered = allSoccerData.OrderBy(mc => mc.Date).ToList();    //Earliest fixture at the top
+            List<SoccerDataLeagueScore> soccerDataLeagueScoresList = new List<SoccerDataLeagueScore>();
+
+            foreach (SoccerData soccerData in allSoccerDataOrdered)
+            {
+                string homeTeam = soccerData.HomeTeam.Replace(SPACE, NOTHING);
+                string awayTeam = soccerData.AwayTeam.Replace(SPACE, NOTHING);
+                DateTime dtFixture = soccerData.Date;  
+                string fullTimeResult = soccerData.FullTimeResult;
+
+                SoccerDataLeagueScore soccerDataLeagueScore = new SoccerDataLeagueScore();
+                soccerDataLeagueScore.Date = dtFixture;
+                soccerDataLeagueScore.HomeTeam = homeTeam;
+                soccerDataLeagueScore.AwayTeam = awayTeam;  
+
+                if (fullTimeResult.Equals(SoccerDataResults.A.ToString()))
+                {
+                    soccerDataLeagueScore.AwayTeamLeagueScore += (int) PremierLeagueScoring.WIN;
+                }
+                else if (fullTimeResult.Equals(SoccerDataResults.D.ToString()))
+                {
+                    soccerDataLeagueScore.HomeTeamLeagueScore += (int)PremierLeagueScoring.DRAW;  
+                    soccerDataLeagueScore.AwayTeamLeagueScore += (int)PremierLeagueScoring.DRAW;    
+                }
+                else if (fullTimeResult.Equals(SoccerDataResults.H.ToString()))
+                {                    
+                    soccerDataLeagueScore.HomeTeamLeagueScore += (int)PremierLeagueScoring.WIN;  
+                }
+
+                soccerDataLeagueScoresList.Add(soccerDataLeagueScore); 
+            }
+
+            return soccerDataLeagueScoresList;
+
+        }
+
+
+        #endregion
 
 
 

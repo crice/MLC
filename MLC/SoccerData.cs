@@ -12,7 +12,6 @@ namespace MLC
     /// </summary>
     public class SoccerData : IEnumerable
     {
-
         public IEnumerator GetEnumerator() { return GetEnumerator(); }
 
         public enum SoccerDataPosition
@@ -130,9 +129,11 @@ namespace MLC
         private int _awayTeamRecentFormGoalsScored;         //Recent form defined as the last 6 matches 
         private string _matchRating;                        //Fixture goal superiority match rating
 
-        private double _homeWinFairOdds;
-        private double _drawFairOdds;
-        private double _awayWinFairOdds;
+        private double _homeWinFairOdds;                    //From match rating
+        private double _drawFairOdds;                       //From match rating
+        private double _awayWinFairOdds;                    //From match rating
+
+        Dictionary<string, int> _leagueScores = new Dictionary<string, int>();        
 
 
         #region Non-Statistical Properties
@@ -393,6 +394,12 @@ namespace MLC
             get { return _awayWinFairOdds; }
             set { _awayWinFairOdds = value; }
         }
+
+        public Dictionary<string, int> LeagueScores
+        {
+            get { return _leagueScores; }
+            set { _leagueScores = value; }
+        }  
 
         #endregion
 
