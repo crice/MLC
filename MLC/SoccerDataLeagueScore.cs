@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections;
 
 namespace MLC
 {
-    public class SoccerDataLeagueScore
+    public class SoccerDataLeagueScore : IEnumerable
     {
 
-        private DateTime _date;                     //Date
-        private string _homeTeam;                   //HomeTeam
-        private string _awayTeam;                   //AwayTeam
-        private int _homeTeamLeagueScore;           //Home team league score for that date
-        private int _awayTeamLeagueScore;           //Away team league score for that date
+        
+
+        private DateTime _date;                                 //Date
+        private string _homeTeam;                               //HomeTeam
+        private string _awayTeam;                               //AwayTeam
+        private string _fullTimeResult;                          //Full time result
+        private int _homeTeamLeagueScoreToThisPoint;            //Home team league score for that date
+        private int _awayTeamLeagueScoreToThisPoint;            //Away team league score for that date
 
 
         #region Properties
@@ -36,19 +40,30 @@ namespace MLC
             set { _awayTeam = value; }
         }
 
+        public string FullTimeResult
+        {
+            get { return _fullTimeResult; }
+            set { _fullTimeResult = value; }
+        }
+
         public int HomeTeamLeagueScore
         {
-            get { return _homeTeamLeagueScore; }
-            set { _homeTeamLeagueScore = value; }
+            get { return _homeTeamLeagueScoreToThisPoint; }
+            set { _homeTeamLeagueScoreToThisPoint = value; }
         }
 
         public int AwayTeamLeagueScore
         {
-            get { return _awayTeamLeagueScore; }
-            set { _awayTeamLeagueScore = value; }
+            get { return _awayTeamLeagueScoreToThisPoint; }
+            set { _awayTeamLeagueScoreToThisPoint = value; }
         }
 
 
+        #endregion
+
+
+        #region Ignore
+        public IEnumerator GetEnumerator() { return GetEnumerator(); }
         #endregion
 
     }

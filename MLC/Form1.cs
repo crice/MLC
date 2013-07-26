@@ -50,7 +50,7 @@ namespace MLC
                 {
                     string fileName = openFileDialog.FileName;
                     List<SoccerData> soccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
-                    Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(soccerData, outFileName);  
+                    //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(soccerData, outFileName);  
                     richTextBox1.Text = "Text output to C:\\"; 
                 }
                 else if (checkBox2.Checked == true)
@@ -436,19 +436,25 @@ namespace MLC
 
 
             List<SoccerData> allSoccerData = new List<SoccerData>();
+            List<SoccerDataLeagueScore> allSoccerDataLeagueScore = new List<SoccerDataLeagueScore>();  
 
             foreach (string fileName in testFiles)
             {
                 List<SoccerData> seasonSoccerData = Utility.GetFixtureMatchRatingForAll(fileName);
-                allSoccerData.AddRange(seasonSoccerData);
+                List<SoccerDataLeagueScore> seasonSoccerDataLeagueScore = Utility.GetLeagueScoreForAll(seasonSoccerData);  
 
-                List<SoccerDataLeagueScore> leagueScores = Utility.GetLeagueScoreForAll(allSoccerData); 
+                allSoccerData.AddRange(seasonSoccerData);
+                allSoccerDataLeagueScore.AddRange(seasonSoccerDataLeagueScore);  
             }
+
+            //Get the league score...
+            //List<SoccerDataLeagueScore> leagueScores = Utility.GetLeagueScoreForAll(allSoccerData); 
+
 
             //Convert to arff format
             //Utility.WriteOutSoccerDataToArffFormat(allSoccerData, @"../../lib/Prem12to08With3BookiesPlusMatchRating_Training.arff"); 
-            Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, @"../../lib/Prem13WithNoWithStrictMatchRatingPlusFairOdds_Test.arff"); 
-            //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, @"../../lib/Prem12to08WithQuestionsNoBookiesStrictMatchRatingPlusFairOdds_Training.arff"); 
+            //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem13NoBookiesWithStrictMatchRatingPlusFairOddsPlusLeagueScores_Test.arff"); 
+            Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem12to08WithQuestionsNoBookiesStrictMatchRatingPlusFairOddsPlusLeagueScores_Training.arff"); 
         }
 
 

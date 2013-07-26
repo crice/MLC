@@ -99,8 +99,8 @@ namespace MLC
                             string dateTime = split[(int)SoccerData.SoccerDataPosition.Date];
                             soccerData.Date = Utility.ConvertStringToDateTime(dateTime);
                             //soccerData.Date = split[(int)SoccerData.SoccerDataPosition.Date];
-                            soccerData.HomeTeam = split[(int)SoccerData.SoccerDataPosition.HomeTeam];
-                            soccerData.AwayTeam = split[(int)SoccerData.SoccerDataPosition.AwayTeam];
+                            soccerData.HomeTeam = split[(int)SoccerData.SoccerDataPosition.HomeTeam].Replace(SPACE, NOTHING);
+                            soccerData.AwayTeam = split[(int)SoccerData.SoccerDataPosition.AwayTeam].Replace(SPACE, NOTHING); ;
                             soccerData.FullTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPosition.FullTimeHomeTeamGoals];
                             soccerData.FullTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPosition.FullTimeAwayTeamGoals];
                             soccerData.FullTimeResult = split[(int)SoccerData.SoccerDataPosition.FullTimeResult];
@@ -176,8 +176,8 @@ namespace MLC
                             soccerData.Division = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.Division];
                             string dateTime = split[(int)SoccerData.SoccerDataPosition.Date];
                             soccerData.Date = Utility.ConvertStringToDateTime(dateTime);
-                            soccerData.HomeTeam = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeam];
-                            soccerData.AwayTeam = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeam];
+                            soccerData.HomeTeam = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.HomeTeam].Replace(SPACE, NOTHING);
+                            soccerData.AwayTeam = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.AwayTeam].Replace(SPACE, NOTHING);
                             soccerData.FullTimeHomeTeamGoals = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.FullTimeHomeTeamGoals];
                             soccerData.FullTimeAwayTeamGoals = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.FullTimeAwayTeamGoals];
                             soccerData.FullTimeResult = split[(int)SoccerData.SoccerDataPositionPre2012WithReferee.FullTimeResult];
@@ -590,12 +590,17 @@ namespace MLC
         }
 
 
-        public static void WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(List<SoccerData> soccerDataList, string outFileName)
+        public static void WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(List<SoccerData> soccerDataList, List<SoccerDataLeagueScore> soccerDataLeagueScore,
+            string outFileName)
         {
 
             ReadXmlFile();
 
             //soccerDataList.RemoveAt(HEADER_INDEX);
+            if (soccerDataList.Count != soccerDataLeagueScore.Count)
+            {
+                string stop = "HERE";
+            }
 
             List<string> homeTeams = new List<string>();
             List<string> awayTeams = new List<string>();
@@ -604,13 +609,11 @@ namespace MLC
             string newHomeTeam = string.Empty;
             string newAwayTeam = string.Empty;
 
-
             homeTeams = ReadXmlFile();
             allHomeTeams = SortAnnexAddBrackets(homeTeams);
             allAwayTeams = allHomeTeams;
-            //Remove comma at end & add the brackets
-            //allHomeTeams = SortAnnexAddBrackets(homeTeams);
-            //allAwayTeams = SortAnnexAddBrackets(awayTeams);
+
+            int counter = 0;
 
             System.IO.StreamWriter file = new System.IO.StreamWriter(outFileName);
 
@@ -660,6 +663,9 @@ namespace MLC
             file.WriteLine("@attribute \'HomeWinFairOdds\' numeric");
             file.WriteLine("@attribute \'DrawFairOdds\' numeric");
             file.WriteLine("@attribute \'AwayWinFairOdds\' numeric"); 
+
+            file.WriteLine("@attribute \'HomeTeamLeagueScoreToThisPoint\' numeric");
+            file.WriteLine("@attribute \'AwayTeamLeagueScoreToThisPoint\' numeric"); 
  
             file.WriteLine("@attribute \'class\' { D,H,A }");
             file.WriteLine("@data");
@@ -788,7 +794,17 @@ namespace MLC
                     file.Write(QUESTION_MARK + COMMA); 
                 }
 
+                //QA check
+                if (soccerData.HomeTeam != soccerDataLeagueScore[counter].HomeTeam || soccerData.AwayTeam != soccerDataLeagueScore[counter].AwayTeam)
+                {
+                    string stop1 = "HERE";
+                }
+
+                file.Write(soccerDataLeagueScore[counter].HomeTeamLeagueScore + COMMA);
+                file.Write(soccerDataLeagueScore[counter].AwayTeamLeagueScore + COMMA); 
+
                 file.WriteLine(soccerData.FullTimeResult);
+                counter++;
             }
 
             file.Close();
@@ -929,37 +945,92 @@ namespace MLC
             List<SoccerData> allSoccerDataOrdered = allSoccerData.OrderBy(mc => mc.Date).ToList();    //Earliest fixture at the top
             List<SoccerDataLeagueScore> soccerDataLeagueScoresList = new List<SoccerDataLeagueScore>();
 
+            List<string> teams = ReadXmlFile(); 
+
             foreach (SoccerData soccerData in allSoccerDataOrdered)
             {
-                string homeTeam = soccerData.HomeTeam.Replace(SPACE, NOTHING);
-                string awayTeam = soccerData.AwayTeam.Replace(SPACE, NOTHING);
+                string homeTeam = soccerData.HomeTeam;
+                string awayTeam = soccerData.AwayTeam;
                 DateTime dtFixture = soccerData.Date;  
                 string fullTimeResult = soccerData.FullTimeResult;
 
                 SoccerDataLeagueScore soccerDataLeagueScore = new SoccerDataLeagueScore();
                 soccerDataLeagueScore.Date = dtFixture;
                 soccerDataLeagueScore.HomeTeam = homeTeam;
-                soccerDataLeagueScore.AwayTeam = awayTeam;  
+                soccerDataLeagueScore.AwayTeam = awayTeam;
+                soccerDataLeagueScore.FullTimeResult = fullTimeResult;
 
-                if (fullTimeResult.Equals(SoccerDataResults.A.ToString()))
+                if (homeTeam == "ManUnited")
                 {
-                    soccerDataLeagueScore.AwayTeamLeagueScore += (int) PremierLeagueScoring.WIN;
+                    string stop = "here";
                 }
-                else if (fullTimeResult.Equals(SoccerDataResults.D.ToString()))
-                {
-                    soccerDataLeagueScore.HomeTeamLeagueScore += (int)PremierLeagueScoring.DRAW;  
-                    soccerDataLeagueScore.AwayTeamLeagueScore += (int)PremierLeagueScoring.DRAW;    
-                }
-                else if (fullTimeResult.Equals(SoccerDataResults.H.ToString()))
-                {                    
-                    soccerDataLeagueScore.HomeTeamLeagueScore += (int)PremierLeagueScoring.WIN;  
-                }
+
+                //Extract all the fixtures this team was in before this point
+                List<SoccerData> homeTeamPreviousFixtures = Utility.GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerDataOrdered, dtFixture, homeTeam, false);
+                List<SoccerData> awayTeamPreviousFixtures = Utility.GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerDataOrdered, dtFixture, awayTeam, false);                  
+
+                soccerDataLeagueScore.HomeTeamLeagueScore = GetAccumulatedLeagueScore(homeTeamPreviousFixtures, homeTeam);
+                soccerDataLeagueScore.AwayTeamLeagueScore = GetAccumulatedLeagueScore(awayTeamPreviousFixtures, awayTeam); 
 
                 soccerDataLeagueScoresList.Add(soccerDataLeagueScore); 
             }
 
             return soccerDataLeagueScoresList;
 
+        }
+
+
+        public static int GetAccumulatedLeagueScore(List<SoccerData> soccerDataList, string teamNameUnderInvestigation)
+        {
+            int leagueScore = 0;
+
+            if (soccerDataList.Count == ZERO)
+                return ZERO;
+
+            foreach (SoccerData soccerData in soccerDataList)
+            {
+                //Determine if the team was playing home or away...
+                string homeTeam = soccerData.HomeTeam;
+                string awayTeam = soccerData.AwayTeam;
+                string fullTimeResult = soccerData.FullTimeResult; 
+
+                if (fullTimeResult.Equals(SoccerDataResults.D.ToString()))
+                {
+                    leagueScore += (int)PremierLeagueScoring.DRAW;
+                    continue;
+                }
+
+                //For that fixture - determine if the team under investiation is playing at home
+                bool isPlayingHome = IsTeamPlayingHome(soccerData, teamNameUnderInvestigation);
+
+                if (isPlayingHome & fullTimeResult.Equals(SoccerDataResults.H.ToString()))
+                {
+                    leagueScore += (int)PremierLeagueScoring.WIN;
+                    continue;
+                }
+
+                if(!isPlayingHome & fullTimeResult.Equals(SoccerDataResults.A.ToString()))
+                    leagueScore += (int)PremierLeagueScoring.WIN;
+
+            }
+
+            return leagueScore;
+        }
+
+        /// <summary>
+        /// For a given fixture and a specified team determines if the team is playing at home or not.
+        /// </summary>
+        /// <param name="soccerData"></param>
+        /// <param name="teamNameUnderInvestigation"></param>
+        /// <returns></returns>
+        private static bool IsTeamPlayingHome(SoccerData soccerData, string teamNameUnderInvestigation)
+        {
+            string homeTeam = soccerData.HomeTeam;
+  
+            if(homeTeam.Equals(teamNameUnderInvestigation))
+                return true;
+            else
+                return false;
         }
 
 
@@ -993,8 +1064,8 @@ namespace MLC
                 DateTime dtFixture = soccerData.Date;
  
                 //For the home team obtain all the fixtures before this point (max of 6 returned)
-                List<SoccerData> allHomeTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerData, dtFixture, homeTeam);
-                List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerData, dtFixture, awayTeam);
+                List<SoccerData> allHomeTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerData, dtFixture, homeTeam, true);
+                List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerData, dtFixture, awayTeam, true);
 
                 string homeTeamGoalSuperiority = string.Empty;
                 string awayTeamGoalSuperiority = string.Empty;
@@ -1049,10 +1120,10 @@ namespace MLC
                 DateTime dtFixture = soccerData.Date;
 
                 //For the home team obtain all the fixtures before this point
-                List<SoccerData> allHomeTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(soccerDataList, dtFixture, homeTeam);
+                List<SoccerData> allHomeTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(soccerDataList, dtFixture, homeTeam, true);
                 int homeTeamGoalSuperiority = GetGoalSuperiorityRating(allHomeTeamFixturesBeforePoint, homeTeam);
 
-                List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(soccerDataList, dtFixture, awayTeam);
+                List<SoccerData> allAwayTeamFixturesBeforePoint = GetHomeOrAwayFixturesBeforeSpecifiedPoint(soccerDataList, dtFixture, awayTeam, true);
                 int awayTeamGoalSuperiority = GetGoalSuperiorityRating(allAwayTeamFixturesBeforePoint, awayTeam);
 
                 soccerData.MatchRating = (homeTeamGoalSuperiority - awayTeamGoalSuperiority).ToString();
@@ -1069,7 +1140,7 @@ namespace MLC
         /// <param name="dt">The datetime before or at which you want the fixtures</param>
         /// <param name="teamName">The team name (like Man United) whos fixtures you want (home or away)</param>
         /// <returns></returns>
-        private static List<SoccerData> GetHomeOrAwayFixturesBeforeSpecifiedPoint(List<SoccerData> soccerDataOrderedList, DateTime dt, string teamName)
+        private static List<SoccerData> GetHomeOrAwayFixturesBeforeSpecifiedPoint(List<SoccerData> soccerDataOrderedList, DateTime dt, string teamName, bool returnRecentFormAmount)
         {
             List<SoccerData> earlierSoccerData = new List<SoccerData>();
 
@@ -1085,7 +1156,8 @@ namespace MLC
                 }
             }
 
-            if (earlierSoccerData.Count > RECENT_FORM)            
+            
+            if (returnRecentFormAmount & earlierSoccerData.Count > RECENT_FORM)            
                 return SortAndTakeRecentFormAmount(earlierSoccerData);            
             else
                 return earlierSoccerData; 
