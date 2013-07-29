@@ -428,17 +428,25 @@ namespace MLC
         {
            
             //Training data
-            string[] trainingFiles = new string[] { @"../../lib/Premiership2012.txt", @"../../lib/Premiership2011.txt", 
-                @"../../lib/Premiership2010.txt", @"../../lib/Premiership2009.txt", @"../../lib/Premiership2009.txt" };
+            //string[] trainingFiles = new string[] { @"../../lib/Premiership2012.txt", @"../../lib/Premiership2011.txt", 
+            //    @"../../lib/Premiership2010.txt", @"../../lib/Premiership2009.txt", @"../../lib/Premiership2009.txt" };
+
+            //string[] trainingFiles = new string[] { @"../../lib/Premiership2011.txt", @"../../lib/Premiership2010.txt", 
+            //    @"../../lib/Premiership2009.txt", @"../../lib/Premiership2008.txt", @"../../lib/Premiership2007.txt" };
+
+            string[] trainingFiles = new string[] { @"../../lib/Premiership2010.txt", @"../../lib/Premiership2009.txt", 
+                @"../../lib/Premiership2008.txt", @"../../lib/Premiership2007.txt", @"../../lib/Premiership2006.txt" };
 
             //Test data
-            string[] testFiles = new string[] { @"../../lib/Premiership2013.txt" };
+            //string[] testFiles = new string[] { @"../../lib/Premiership2013.txt" };
+            //string[] testFiles = new string[] { @"../../lib/Premiership2012.txt" }; 
+            string[] testFiles = new string[] { @"../../lib/Premiership2011.txt" }; 
 
 
             List<SoccerData> allSoccerData = new List<SoccerData>();
             List<SoccerDataLeagueScore> allSoccerDataLeagueScore = new List<SoccerDataLeagueScore>();  
 
-            foreach (string fileName in testFiles)
+            foreach (string fileName in trainingFiles)
             {
                 List<SoccerData> seasonSoccerData = Utility.GetFixtureMatchRatingForAll(fileName);
                 List<SoccerDataLeagueScore> seasonSoccerDataLeagueScore = Utility.GetLeagueScoreForAll(seasonSoccerData);  
@@ -453,8 +461,8 @@ namespace MLC
 
             //Convert to arff format
             //Utility.WriteOutSoccerDataToArffFormat(allSoccerData, @"../../lib/Prem12to08With3BookiesPlusMatchRating_Training.arff"); 
-            //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem13NoBookiesWithStrictMatchRatingPlusFairOddsPlusLeagueScores_Test.arff"); 
-            Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem12to08WithQuestionsNoBookiesStrictMatchRatingPlusFairOddsPlusLeagueScores_Training.arff"); 
+            //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem11NoBookiesWithStrictMatchRatingPlusFairOddsPlusLeagueScores_Test.arff"); 
+            Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem10to06WithQuestionsNoBookiesStrictMatchRatingPlusFairOddsPlusLeagueScores_Training.arff"); 
         }
 
 

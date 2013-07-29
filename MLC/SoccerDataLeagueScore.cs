@@ -17,6 +17,9 @@ namespace MLC
         private string _fullTimeResult;                          //Full time result
         private int _homeTeamLeagueScoreToThisPoint;            //Home team league score for that date
         private int _awayTeamLeagueScoreToThisPoint;            //Away team league score for that date
+        private int _leagueScoreDelta;                          //Difference between home team league score - away team league score
+
+
 
 
         #region Properties
@@ -56,6 +59,12 @@ namespace MLC
         {
             get { return _awayTeamLeagueScoreToThisPoint; }
             set { _awayTeamLeagueScoreToThisPoint = value; }
+        }
+
+        public int LeagueScoreDelta
+        {
+            get { return _leagueScoreDelta; }
+            set { _leagueScoreDelta = value; }
         }
 
 

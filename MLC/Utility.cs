@@ -666,6 +666,7 @@ namespace MLC
 
             file.WriteLine("@attribute \'HomeTeamLeagueScoreToThisPoint\' numeric");
             file.WriteLine("@attribute \'AwayTeamLeagueScoreToThisPoint\' numeric"); 
+            //file.WriteLine("@attribute \'LeagueScoreDelta\' numeric"); 
  
             file.WriteLine("@attribute \'class\' { D,H,A }");
             file.WriteLine("@data");
@@ -801,7 +802,8 @@ namespace MLC
                 }
 
                 file.Write(soccerDataLeagueScore[counter].HomeTeamLeagueScore + COMMA);
-                file.Write(soccerDataLeagueScore[counter].AwayTeamLeagueScore + COMMA); 
+                file.Write(soccerDataLeagueScore[counter].AwayTeamLeagueScore + COMMA);
+                //file.Write(soccerDataLeagueScore[counter].LeagueScoreDelta + COMMA); 
 
                 file.WriteLine(soccerData.FullTimeResult);
                 counter++;
@@ -937,6 +939,10 @@ namespace MLC
 
         /// <summary>
         /// Populates a suitable container with league scores.
+        /// Also calulates the league score delta (which is home team league score - away team). The underlying assumption is:
+        /// Big delta => high probability of home team win.
+        /// 0 delta => high probability of a draw.
+        /// Negative delta => high probability of away win.
         /// </summary>
         /// <param name="allSoccerData"></param>
         /// <returns></returns>
@@ -970,7 +976,8 @@ namespace MLC
                 List<SoccerData> awayTeamPreviousFixtures = Utility.GetHomeOrAwayFixturesBeforeSpecifiedPoint(allSoccerDataOrdered, dtFixture, awayTeam, false);                  
 
                 soccerDataLeagueScore.HomeTeamLeagueScore = GetAccumulatedLeagueScore(homeTeamPreviousFixtures, homeTeam);
-                soccerDataLeagueScore.AwayTeamLeagueScore = GetAccumulatedLeagueScore(awayTeamPreviousFixtures, awayTeam); 
+                soccerDataLeagueScore.AwayTeamLeagueScore = GetAccumulatedLeagueScore(awayTeamPreviousFixtures, awayTeam);
+                soccerDataLeagueScore.LeagueScoreDelta = soccerDataLeagueScore.HomeTeamLeagueScore - soccerDataLeagueScore.AwayTeamLeagueScore;     
 
                 soccerDataLeagueScoresList.Add(soccerDataLeagueScore); 
             }
