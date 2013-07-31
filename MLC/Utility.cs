@@ -1338,5 +1338,40 @@ namespace MLC
 
 
 
+        /// <summary>
+        /// For a given home & away teams - obtains how many times that they encountered & the result of that encounter
+        /// </summary>
+        /// <param name="pathToRawData"></param>
+        /// <param name="homeTeam"></param>
+        /// <param name="awayTeam"></param>
+        /// <returns>Dictionary of fixture encounter number & fixture result</returns>
+        public static Dictionary<int, string> ExtractInfoOnPreviousExactEncountersFromTrainingData(string pathToRawData, string homeTeam, string awayTeam)
+        {
+            Dictionary<int, string> previousFixtureResults = new Dictionary<int, string>();
+
+            bool includeHeader = false;
+            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(pathToRawData, includeHeader);
+
+            //Extact the home-team subset from all the data
+            List<SoccerData> homeTeamSubset = allSoccerData.FindAll(mc => mc.HomeTeam.Replace(SPACE, NOTHING) == homeTeam);
+
+            //Extract away-team subset from the home-team subset
+            List<SoccerData> awayTeamSubset = homeTeamSubset.FindAll(mc => mc.AwayTeam.Replace(SPACE, NOTHING) == awayTeam);
+
+            //Order the fixturesd where both teams met.
+            List<SoccerData> orderedPreviousFixture = awayTeamSubset.OrderByDescending(mc => mc.Date).ToList();  //Most recent at the top of the list  
+
+            string peviousEncountersResult = string.Empty;
+            int previousEncountersCount = 0;
+            foreach (SoccerData soccerData in orderedPreviousFixture)
+            {
+                previousEncountersCount++;
+                peviousEncountersResult += soccerData.FullTimeResult;
+            }
+
+            previousFixtureResults.Add(previousEncountersCount, peviousEncountersResult);
+            return previousFixtureResults;
+        }
+
     }
 }

@@ -21,6 +21,8 @@ namespace MLC
     public partial class Form1 : Form
     {
         
+        public const string SPACE = " ";
+        public const string NOTHING = "";
 
         public Form1()
         {
@@ -132,6 +134,103 @@ namespace MLC
             Prediction.Predict(test, @resultsFileLocation, model, false);
         }
 
+        public class WekaResult
+        {
+            private string _homeTeam;
+            private string _awayTeam;
+            private string _actualResult;
+            private string _predictedResult;
+            private string _correct;
+            private string _interpretation;
+            Dictionary<int, string> previousFixtureData = new Dictionary<int,string>();
+            double[] distribution = new double[3];
+            private string _drawProbability;
+            private string _homeWinProbability;
+            private string _awayWinProbability;
+
+
+            private string _differenceBetweenActualAndPredicted;
+
+
+            #region Properties
+
+            public string HomeTeam
+            {
+              get { return _homeTeam; }
+              set { _homeTeam = value; }
+            }
+
+            public string AwayTeam
+            {
+              get { return _awayTeam; }
+              set { _awayTeam = value; }
+            }
+
+            public string ActualResult
+            {
+              get { return _actualResult; }
+              set { _actualResult = value; }
+            }
+
+
+            public string PredictedResult
+            {
+              get { return _predictedResult; }
+              set { _predictedResult = value; }
+            }
+
+            public string Correct
+            {
+              get { return _correct; }
+              set { _correct = value; }
+            }
+
+            public string Interpretation
+            {
+              get { return _interpretation; }
+              set { _interpretation = value; }
+            }
+
+            public Dictionary<int, string> PreviousFixtureData
+            {
+                get { return previousFixtureData; }
+                set { previousFixtureData = value; }
+            } 
+
+            public double[] Distribution
+            {
+              get { return distribution; }
+              set { distribution = value; }
+            }
+
+            public string DrawProbability
+            {
+              get { return _drawProbability; }
+              set { _drawProbability = value; }
+            }
+
+            public string HomeWinProbability
+            {
+                get { return _homeWinProbability; }
+                set { _homeWinProbability = value; }
+            }
+
+            public string AwayWinProbability
+            {
+              get { return _awayWinProbability; }
+              set { _awayWinProbability = value; }
+            }
+
+            public string DifferenceBetweenActualAndPredicted
+            {
+              get { return _differenceBetweenActualAndPredicted; }
+              set { _differenceBetweenActualAndPredicted = value; }
+            }
+
+            #endregion
+
+
+        }
 
         //WEKA
         private void button3_Click(object sender, EventArgs e)
@@ -142,10 +241,15 @@ namespace MLC
             //string trainPath = @"../../lib/Premiership_12to01_Train_3BookiesOnly.arff";
             //string trainPath = @"../../lib/Prem_Pre12_With3Bookies.arff";
             //string trainPath = @"../../lib/Prem_12_11_10_With3Bookies.arff";
-            string trainPath = @"../../lib/Prem_12to08_Train_3Bookies.arff";
+            //string trainPath = @"../../lib/Prem_12to08_Train_3Bookies.arff";
             //string trainPath = @"../../lib/Prem_12_11_10_09_08_07_With3Bookies.arff";
             //string trainPath = @"../../lib/Prem12_11_10_09_With3Bookies.arff";
-            string testPath = @"../../lib/Premiership_13_ReqPred_3Bookies.arff";
+            //string testPath = @"../../lib/Premiership_13_ReqPred_3Bookies.arff";
+
+            string trainPath = @"../../lib/SeasonEnding2013/Prem12to08WithQuestionsNoBookiesStrictMatchRatingPlusFairOddsPlusLeagueScores_Training.arff";
+            string testPath = @"../../lib/SeasonEnding2013/Prem13NoBookiesWithStrictMatchRatingPlusFairOddsPlusLeagueScores_Test.arff";
+            string pathToRawData = @"../../lib/Premiership_12_11_10_09_08.txt";
+            List<WekaResult> wekaResultsList = new List<WekaResult>();  
 
             try
             {
@@ -155,10 +259,13 @@ namespace MLC
                 test.setClassIndex(test.numAttributes() - 1);  
 
                 //Train classifier
-                Classifier classifier = new NaiveBayes();
+                //Classifier classifier = new NaiveBayes();
                 //classifier.setOptions(new string[] { "-D" });         //use supervised descritization
-                classifier.setOptions(new string[] { "-K" });           //use kernel estimator
-                classifier.buildClassifier(train);
+                //classifier.setOptions(new string[] { "-K" });           //use kernel estimator
+                //classifier.buildClassifier(train);
+
+                Classifier classifier = new weka.classifiers.trees.J48();
+                classifier.buildClassifier(train); 
 
                 Evaluation eval = new Evaluation(train);
                 java.util.Random rand = new java.util.Random(1); 
@@ -178,54 +285,68 @@ namespace MLC
                                         new FileReader(testPath)));
                 unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
 
-                string outcome = "RIGHT";
                 for (int i = 0; i < test.numInstances(); i++)
                 {
+                    WekaResult wekaResult = new WekaResult();
+
+                    //Extract home/away team combo...
+                    string homeTeamStr = unlabeled.instance(i).stringValue(0);
+                    wekaResult.HomeTeam = unlabeled.instance(i).stringValue(0);
+                    string awayTeamStr = unlabeled.instance(i).stringValue(1);
+                    wekaResult.AwayTeam = unlabeled.instance(i).stringValue(1);
+                    Dictionary<int, string> previousFixtureInfo = Utility.ExtractInfoOnPreviousExactEncountersFromTrainingData(pathToRawData, homeTeamStr, awayTeamStr);  
+                    wekaResult.PreviousFixtureData = Utility.ExtractInfoOnPreviousExactEncountersFromTrainingData(pathToRawData, homeTeamStr, awayTeamStr);  
+
+
                     //Extract the predicted class result
                     double dblPredictedClass = classifier.classifyInstance(test.instance(i));
-                    string strPredictedClass = unlabeled.classAttribute().value((int) dblPredictedClass);   
+                    string strPredictedClass = unlabeled.classAttribute().value((int) dblPredictedClass); 
+                    wekaResult.PredictedResult = "Predicted: " + unlabeled.classAttribute().value((int) dblPredictedClass); 
+  
+                    //Extract the distribution
                     double[] distribution = classifier.distributionForInstance(test.instance(i));
+                    wekaResult.Distribution = classifier.distributionForInstance(test.instance(i));
+                    wekaResult.DrawProbability = Math.Round(distribution[(int)Utility.SoccerDataResultsWekaDistPos.D], 3).ToString();
+                    wekaResult.HomeWinProbability = Math.Round(distribution[(int)Utility.SoccerDataResultsWekaDistPos.H], 3).ToString();
+                    wekaResult.AwayWinProbability = Math.Round(distribution[(int)Utility.SoccerDataResultsWekaDistPos.A], 3).ToString();
 
                     //Extract actual class result
                     double dblActualClass = unlabeled.instance(i).classValue();
                     string strActualClass = unlabeled.classAttribute().value((int)dblActualClass);
+                    wekaResult.ActualResult = "Actual: " + unlabeled.classAttribute().value((int)dblActualClass);
 
-                    double difference = 0.0;
                     if (!dblActualClass.Equals(dblPredictedClass))
                     {
-                        outcome = "WRONG";
-                        double dblActualResult = GetActualValue(distribution, strActualClass);
-                        double dblPredictedResult = GetActualValue(distribution, strPredictedClass);
-
-                        difference = dblActualResult - dblPredictedResult;
-                        difference = Math.Abs(difference);
-                        difference = Math.Round(difference, 3);
+                        wekaResult.Correct = "WRONG";
+                        wekaResult.DifferenceBetweenActualAndPredicted = GetDifferenceBetweenActualAndPredicted(distribution, strActualClass, strPredictedClass);
                     }
                     else
-                        outcome = "RIGHT";
-
-                    //Extract home/away team combo...
-                    string homeTeamStr = unlabeled.instance(i).stringValue(0);
-                    string awayTeamStr = unlabeled.instance(i).stringValue(1);
-                    string fixtures = ExtractInfoOnPreviousEncountersFromTrainingData(homeTeamStr, awayTeamStr);  
-
-                    this.richTextBox3.Text += i.ToString() + "\t" +"ACTUAL: " +strActualClass +"\t" + "PREDICTED: " + strPredictedClass +"\t"; 
-                    for (int j = 0; j < distribution.Count(); j++)
                     {
-                        double rounded = Math.Round(distribution[j], 3);
-                        this.richTextBox3.Text += rounded.ToString() + "\t";
+                        wekaResult.Correct = "RIGHT";
+                        wekaResult.DifferenceBetweenActualAndPredicted = "0";
                     }
 
-                    this.richTextBox3.Text += outcome + "\t";
 
-                    if (difference <= 0.1)
-                        this.richTextBox3.Text += "VERY CLOSE" + "\t";
+                    wekaResultsList.Add(wekaResult);
 
-                    this.richTextBox3.Text += difference.ToString() + "\t";
-                    this.richTextBox3.Text += fixtures;
- 
-                    this.richTextBox3.Text += "\n"; 
-                }                
+                } 
+               
+                int j = 0;                
+                //Pump out to screen
+                foreach (WekaResult wekaResult in wekaResultsList)
+                {
+                    Dictionary<int, string> previousFixtureScores = wekaResult.PreviousFixtureData;
+                    int count = previousFixtureScores.Keys.FirstOrDefault();
+                    string fixturesPattern = previousFixtureScores.Values.FirstOrDefault();  
+
+
+                    this.richTextBox3.Text += wekaResult.HomeTeam + "\t" + wekaResult.AwayTeam + "\t" + wekaResult.ActualResult + "\t" + wekaResult.PredictedResult +
+                        "\t" + wekaResult.Correct + "\t" + count.ToString()  + "\t" + fixturesPattern +
+                        "\t" + wekaResult.DrawProbability + "\t" + wekaResult.HomeWinProbability + "\t" + wekaResult.AwayWinProbability + "\t" + wekaResult.DifferenceBetweenActualAndPredicted + "\n";       
+
+                    j++;
+                }
+
             }
             catch (java.lang.Exception ex)
             {
@@ -234,30 +355,47 @@ namespace MLC
         }
 
 
-
-        public string ExtractInfoOnPreviousEncountersFromTrainingData(string homeTeam, string awayTeam)
+        public string GetDifferenceBetweenActualAndPredicted(double[] distribution, string strActualClassNumber, string strPredictedClassNumber)
         {
-            //string fileName = @"../../lib/Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt";
-            string fileName = @"../../lib/Premiership_12_11_10_09_08.txt";
+
+            double dblActualResult = GetActualValue(distribution, strActualClassNumber);
+            double dblPredictedResult = GetActualValue(distribution, strPredictedClassNumber);
+
+            double difference = 0.0;
+            difference = dblActualResult - dblPredictedResult;
+            difference = Math.Abs(difference);
+            difference = Math.Round(difference, 3);
+
+            return difference.ToString();
+
+        }
+
+        public Dictionary<int, string> ExtractInfoOnPreviousEncountersFromTrainingData(string pathToRawData, string homeTeam, string awayTeam)
+        {
+            Dictionary<int, string> previousFixtureResults = new Dictionary<int, string>();
 
             bool includeHeader = false;
-            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
+            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(pathToRawData, includeHeader);
 
             //Extact the home-team subset from all the data
-            List<SoccerData> homeTeamSubset = allSoccerData.FindAll(mc => mc.HomeTeam == homeTeam);
+            List<SoccerData> homeTeamSubset = allSoccerData.FindAll(mc => mc.HomeTeam.Replace(SPACE, NOTHING)  == homeTeam);
 
             //Extract away-team subset from the home-team subset
-            List<SoccerData> awayTeamSubset = homeTeamSubset.FindAll(mc => mc.AwayTeam == awayTeam);
+            List<SoccerData> awayTeamSubset = homeTeamSubset.FindAll(mc => mc.AwayTeam.Replace(SPACE, NOTHING) == awayTeam);
 
-            string fixtureInfo = string.Empty;
-            int count = 0;
-            foreach (SoccerData soccerData in awayTeamSubset)
+            //Order the fixturesd where both teams met.
+            List<SoccerData> orderedPreviousFixture = awayTeamSubset.OrderByDescending(mc => mc.Date).ToList();  //Most recent at the top of the list  
+            
+            string peviousEncountersResult = string.Empty;
+            int previousEncountersCount = 0;
+            foreach (SoccerData soccerData in orderedPreviousFixture)
             {
-                count++;
-                fixtureInfo += soccerData.FullTimeResult; 
+                previousEncountersCount++;
+                peviousEncountersResult += soccerData.FullTimeResult; 
             }
 
-            return count.ToString() + fixtureInfo;
+            previousFixtureResults.Add(previousEncountersCount, peviousEncountersResult);  
+            return previousFixtureResults; 
         }
 
 
@@ -428,19 +566,19 @@ namespace MLC
         {
            
             //Training data
-            //string[] trainingFiles = new string[] { @"../../lib/Premiership2012.txt", @"../../lib/Premiership2011.txt", 
-            //    @"../../lib/Premiership2010.txt", @"../../lib/Premiership2009.txt", @"../../lib/Premiership2009.txt" };
+            string[] trainingFiles = new string[] { @"../../lib/Premiership2012.txt", @"../../lib/Premiership2011.txt", 
+                @"../../lib/Premiership2010.txt", @"../../lib/Premiership2009.txt", @"../../lib/Premiership2009.txt" };
 
             //string[] trainingFiles = new string[] { @"../../lib/Premiership2011.txt", @"../../lib/Premiership2010.txt", 
             //    @"../../lib/Premiership2009.txt", @"../../lib/Premiership2008.txt", @"../../lib/Premiership2007.txt" };
 
-            string[] trainingFiles = new string[] { @"../../lib/Premiership2010.txt", @"../../lib/Premiership2009.txt", 
-                @"../../lib/Premiership2008.txt", @"../../lib/Premiership2007.txt", @"../../lib/Premiership2006.txt" };
+            //string[] trainingFiles = new string[] { @"../../lib/Premiership2010.txt", @"../../lib/Premiership2009.txt", 
+            //    @"../../lib/Premiership2008.txt", @"../../lib/Premiership2007.txt", @"../../lib/Premiership2006.txt" };
 
             //Test data
             //string[] testFiles = new string[] { @"../../lib/Premiership2013.txt" };
             //string[] testFiles = new string[] { @"../../lib/Premiership2012.txt" }; 
-            string[] testFiles = new string[] { @"../../lib/Premiership2011.txt" }; 
+            //string[] testFiles = new string[] { @"../../lib/Premiership2011.txt" }; 
 
 
             List<SoccerData> allSoccerData = new List<SoccerData>();
@@ -462,7 +600,7 @@ namespace MLC
             //Convert to arff format
             //Utility.WriteOutSoccerDataToArffFormat(allSoccerData, @"../../lib/Prem12to08With3BookiesPlusMatchRating_Training.arff"); 
             //Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem11NoBookiesWithStrictMatchRatingPlusFairOddsPlusLeagueScores_Test.arff"); 
-            Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem10to06WithQuestionsNoBookiesStrictMatchRatingPlusFairOddsPlusLeagueScores_Training.arff"); 
+            Utility.WriteOutSoccerDataToArffFormat_SIMPLEFORMAT_WithQuestionsMarks(allSoccerData, allSoccerDataLeagueScore, @"../../lib/Prem12to08WithQuestionsNoBookiesStrictMatchRatingPlusFairOddsPlusLeagueScores_Training.arff"); 
         }
 
 
