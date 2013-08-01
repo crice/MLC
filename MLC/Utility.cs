@@ -645,7 +645,7 @@ namespace MLC
 
             file.WriteLine("@attribute \'HomeTeamRedCards\' numeric");
             file.WriteLine("@attribute \'AwayTeamRedCards\' numeric");
-
+            
             file.WriteLine("@attribute \'Bet365HomeWinOdds\' numeric");
             file.WriteLine("@attribute \'Bet365DrawOdds\' numeric");
             file.WriteLine("@attribute \'Bet365AwayWinOdds\' numeric");
@@ -656,7 +656,7 @@ namespace MLC
 
             file.WriteLine("@attribute \'WilliamHillHomeWinOdds\' numeric");
             file.WriteLine("@attribute \'WilliamHillDrawOdds\' numeric");
-            file.WriteLine("@attribute \'WilliamHillAwayWinOdds\' numeric");
+            file.WriteLine("@attribute \'WilliamHillAwayWinOdds\' numeric");            
 
             file.WriteLine("@attribute \'MatchRating\' numeric");
 
@@ -664,8 +664,8 @@ namespace MLC
             file.WriteLine("@attribute \'DrawFairOdds\' numeric");
             file.WriteLine("@attribute \'AwayWinFairOdds\' numeric"); 
 
-            file.WriteLine("@attribute \'HomeTeamLeagueScoreToThisPoint\' numeric");
-            file.WriteLine("@attribute \'AwayTeamLeagueScoreToThisPoint\' numeric"); 
+            //file.WriteLine("@attribute \'HomeTeamLeagueScoreToThisPoint\' numeric");
+            //file.WriteLine("@attribute \'AwayTeamLeagueScoreToThisPoint\' numeric"); 
             //file.WriteLine("@attribute \'LeagueScoreDelta\' numeric"); 
  
             file.WriteLine("@attribute \'class\' { D,H,A }");
@@ -801,8 +801,8 @@ namespace MLC
                     string stop1 = "HERE";
                 }
 
-                file.Write(soccerDataLeagueScore[counter].HomeTeamLeagueScore + COMMA);
-                file.Write(soccerDataLeagueScore[counter].AwayTeamLeagueScore + COMMA);
+                //file.Write(soccerDataLeagueScore[counter].HomeTeamLeagueScore + COMMA);
+                //file.Write(soccerDataLeagueScore[counter].AwayTeamLeagueScore + COMMA);
                 //file.Write(soccerDataLeagueScore[counter].LeagueScoreDelta + COMMA); 
 
                 file.WriteLine(soccerData.FullTimeResult);

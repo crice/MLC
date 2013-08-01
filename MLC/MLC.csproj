@@ -114,6 +114,10 @@
     <Content Include="lib\Premiership_13_12_11_10_09.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08.txt" />
+    <None Include="lib\SeasonEnding2013\NoMetaStatsNoBookiesPlusStrictMRPlusFairOdds\Prem12to08NoMetaNoBookiesWithStrictMatchRatingPlusFair_Training.arff" />
+    <None Include="lib\SeasonEnding2013\NoMetaStatsNoBookiesPlusStrictMRPlusFairOdds\Prem13NoMetaNoBookiesWithStrictMatchRatingPlusFairOdds_Test.arff" />
+    <None Include="lib\SeasonEnding2013\NoMetaStatsPlus3BookiesPlusStrictMRPlusFairOddsPlusLeagueDelta\Prem13Plus3BookiesWithStrictMatchRatingPlusFairOddsPlusLeagueDelta_Test.arff" />
+    <None Include="lib\SeasonEnding2013\NoMetaStatsPlus3BookiesPlusStrictMRPlusFairOddsPlusLeagueDelta\Prem12to08Plus3BookiesWithStrictMatchRatingPlusFairOddsPlusLeagueDelta_Training.arff" />
     <None Include="lib\SeasonEnding2011\Prem10to06WithQuestionsNoBookiesStrictMatchRatingPlusFairOddsPlusLeagueScores_Training.arff" />
     <None Include="lib\SeasonEnding2011\Prem11NoBookiesWithStrictMatchRatingPlusFairOddsPlusLeagueScores_Test.arff" />
     <None Include="lib\SeasonEnding2012\Prem11to07WithQuestionsNoBookiesStrictMatchRatingPlusFairOddsPlusLeagueScores_Training.arff" />
