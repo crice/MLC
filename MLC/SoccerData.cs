@@ -129,11 +129,45 @@ namespace MLC
         private int _awayTeamRecentFormGoalsScored;         //Recent form defined as the last 6 matches 
         private string _matchRating;                        //Fixture goal superiority match rating
 
-        private double _homeWinFairOdds;                    //From match rating
-        private double _drawFairOdds;                       //From match rating
-        private double _awayWinFairOdds;                    //From match rating
+        private double _homeWinFairOdds;                    //From match rating & a paper
+        private double _drawFairOdds;                       //From match rating & a paper
+        private double _awayWinFairOdds;                    //From match rating & a paper
 
-        Dictionary<string, int> _leagueScores = new Dictionary<string, int>();        
+        Dictionary<string, int> _leagueScores = new Dictionary<string, int>();
+
+        private int _homeTeamPeviousMatchesPlayed;
+        private int _awayTeamPreviousMatchesPlayed;
+
+        private int _homeTeamPreviousHomeWins;
+        private int _awayTeamPreviousHomeWins;
+
+        private int _homeTeamPreviousHomeDraws;
+        private int _awaTeamPreviousAwayDraws;
+
+        private int _homeTeamPreviousHomeLosses;
+        private int _awayTeamPreviousHomeLosses;
+
+        private int _homeTeamPreviousHomeGoalsConceded;
+        private int _awayTeamPreviousHomeGoalsConceded;
+
+        private int _homeTeamPreviousAwayWins;
+        private int _awayTeamPreviousAwayWins;
+
+        private int _homeTeamPreviousAwayDraws;
+        private int _awayTeamPreviousAwayDraws;
+
+        private int _homeTeamPreviousAwayLosses;
+        private int _awayTeamPreviousAwayLosses;
+
+        private int _homeTeamPreviousAwayGoalsConceded;
+        private int _awayTeamPreviousAwayGoalsConceded;
+
+        private int _homeTeamPreviousAwayGoalsScored;
+        private int _awayTeamPreviousAwayGoalsScored;
+
+        private int _homeTeamRecentformPoints;
+        private int _awayTeamRecentformPoints;
+
 
 
         #region Non-Statistical Properties

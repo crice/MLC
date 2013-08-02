@@ -114,6 +114,9 @@
     <Content Include="lib\Premiership_13_12_11_10_09.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08_07_06_05_04_03_02_01.txt" />
     <Content Include="lib\Premiership_12_11_10_09_08.txt" />
+    <None Include="lib\docs\MLC.docx" />
+    <None Include="lib\Prem12to07NoMetaNoBookiesWithStrictMatchRatingPlusFair_Training.arff" />
+    <None Include="lib\Prem13NoMetaNoBookiesWithStrictMatchRatingPlusFairOdds_Test.arff" />
     <None Include="lib\SeasonEnding2013\NoMetaStatsNoBookiesPlusStrictMRPlusFairOdds\Prem12to08NoMetaNoBookiesWithStrictMatchRatingPlusFair_Training.arff" />
     <None Include="lib\SeasonEnding2013\NoMetaStatsNoBookiesPlusStrictMRPlusFairOdds\Prem13NoMetaNoBookiesWithStrictMatchRatingPlusFairOdds_Test.arff" />
     <None Include="lib\SeasonEnding2013\NoMetaStatsPlus3BookiesPlusStrictMRPlusFairOddsPlusLeagueDelta\Prem13Plus3BookiesWithStrictMatchRatingPlusFairOddsPlusLeagueDelta_Test.arff" />

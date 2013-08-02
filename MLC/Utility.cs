@@ -1060,7 +1060,7 @@ namespace MLC
         public static List<SoccerData> GetFixtureMatchRatingForAll(string fileName)
         {
             bool includeHeader = false;
-            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFilePre2012WithReferee(fileName, includeHeader);
+            List<SoccerData> allSoccerData = Utility.ReadSoccerDataFromFile(fileName, includeHeader);
             List<SoccerData> allSoccerDataOrdered = allSoccerData.OrderBy(mc => mc.Date).ToList();    //Earliest fixture at the top
 
 
