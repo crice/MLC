@@ -135,37 +135,32 @@ namespace MLC
 
         Dictionary<string, int> _leagueScores = new Dictionary<string, int>();
 
+        //Home team stats
         private int _homeTeamPeviousMatchesPlayed;
-        private int _awayTeamPreviousMatchesPlayed;
-
         private int _homeTeamPreviousHomeWins;
-        private int _awayTeamPreviousHomeWins;
-
         private int _homeTeamPreviousHomeDraws;
-        private int _awaTeamPreviousAwayDraws;
-
         private int _homeTeamPreviousHomeLosses;
-        private int _awayTeamPreviousHomeLosses;
-
+        private int _homeTeamPreviousHomeGoalsScored;
         private int _homeTeamPreviousHomeGoalsConceded;
-        private int _awayTeamPreviousHomeGoalsConceded;
-
         private int _homeTeamPreviousAwayWins;
-        private int _awayTeamPreviousAwayWins;
-
         private int _homeTeamPreviousAwayDraws;
-        private int _awayTeamPreviousAwayDraws;
-
         private int _homeTeamPreviousAwayLosses;
-        private int _awayTeamPreviousAwayLosses;
-
-        private int _homeTeamPreviousAwayGoalsConceded;
-        private int _awayTeamPreviousAwayGoalsConceded;
-
         private int _homeTeamPreviousAwayGoalsScored;
-        private int _awayTeamPreviousAwayGoalsScored;
+        private int _homeTeamPreviousAwayGoalsConceded;
+        private int _homeTeamRecentFormPoints;
 
-        private int _homeTeamRecentformPoints;
+        //Away team stats
+        private int _awayTeamPreviousMatchesPlayed;
+        private int _awayTeamPreviousHomeWins;
+        private int _awayTeamPreviousHomeDraws;
+        private int _awayTeamPreviousHomeLosses;
+        private int _awayTeamPreviousHomeGoalsScored;
+        private int _awayTeamPreviousHomeGoalsConceded;
+        private int _awayTeamPreviousAwayWins;
+        private int _awayTeamPreviousAwayDraws;
+        private int _awayTeamPreviousAwayLosses;
+        private int _awayTeamPreviousAwayGoalsConceded;
+        private int _awayTeamPreviousAwayGoalsScored;               
         private int _awayTeamRecentformPoints;
 
 
@@ -434,6 +429,152 @@ namespace MLC
             get { return _leagueScores; }
             set { _leagueScores = value; }
         }  
+
+        #endregion
+
+
+        #region New Statistics - Home Team
+
+
+        public int HomeTeamPeviousMatchesPlayed
+        {
+            get { return _homeTeamPeviousMatchesPlayed; }
+            set { _homeTeamPeviousMatchesPlayed = value; }
+        }
+
+        public int HomeTeamPreviousHomeWins
+        {
+            get { return _homeTeamPreviousHomeWins; }
+            set { _homeTeamPreviousHomeWins = value; }
+        }
+
+        public int HomeTeamPreviousHomeDraws
+        {
+            get { return _homeTeamPreviousHomeDraws; }
+            set { _homeTeamPreviousHomeDraws = value; }
+        }
+
+        public int HomeTeamPreviousHomeLosses
+        {
+            get { return _homeTeamPreviousHomeLosses; }
+            set { _homeTeamPreviousHomeLosses = value; }
+        }
+
+        public int HomeTeamPreviousHomeGoalsScored
+        {
+            get { return _homeTeamPreviousHomeGoalsScored; }
+            set { _homeTeamPreviousHomeGoalsScored = value; }
+        }
+
+        public int HomeTeamPreviousHomeGoalsConceded
+        {
+            get { return _homeTeamPreviousHomeGoalsConceded; }
+            set { _homeTeamPreviousHomeGoalsConceded = value; }
+        }
+
+        public int HomeTeamPreviousAwayWins
+        {
+            get { return _homeTeamPreviousAwayWins; }
+            set { _homeTeamPreviousAwayWins = value; }
+        }
+
+        public int HomeTeamPreviousAwayDraws
+        {
+            get { return _awayTeamPreviousHomeDraws; }
+            set { _awayTeamPreviousHomeDraws = value; }
+        }
+
+        public int HomeTeamPreviousAwayLosses
+        {
+            get { return _homeTeamPreviousAwayLosses; }
+            set { _homeTeamPreviousAwayLosses = value; }
+        }
+
+        public int HomeTeamPreviousAwayGoalsScored
+        {
+            get { return _homeTeamPreviousAwayGoalsScored; }
+            set { _homeTeamPreviousAwayGoalsScored = value; }
+        }
+
+        public int HomeTeamPreviousAwayGoalsConceded
+        {
+            get { return _homeTeamPreviousAwayGoalsConceded; }
+            set { _homeTeamPreviousAwayGoalsConceded = value; }
+        }
+
+        #endregion
+
+
+        #region New Statistics - Away Team
+
+
+        public int AwayTeamPreviousMatchesPlayed
+        {
+            get { return _awayTeamPreviousMatchesPlayed; }
+            set { _awayTeamPreviousMatchesPlayed = value; }
+        }
+
+        public int AwayTeamPreviousHomeWins
+        {
+            get { return _awayTeamPreviousHomeWins; }
+            set { _awayTeamPreviousHomeWins = value; }
+        }
+
+        public int AwayTeamPreviousHomeDraws
+        {
+            get { return _awayTeamPreviousHomeDraws; }
+            set { _awayTeamPreviousHomeDraws = value; }
+        }
+
+        public int AwayTeamPreviousHomeLosses
+        {
+            get { return _awayTeamPreviousHomeLosses; }
+            set { _awayTeamPreviousHomeLosses = value; }
+        }
+
+        public int AwayTeamPreviousHomeGoalsScored
+        {
+            get { return _awayTeamPreviousHomeGoalsScored; }
+            set { _awayTeamPreviousHomeGoalsScored = value; }
+        }
+
+        public int AwayTeamPreviousHomeGoalsConceded
+        {
+            get { return _awayTeamPreviousHomeGoalsConceded; }
+            set { _awayTeamPreviousHomeGoalsConceded = value; }
+        }
+
+        public int AwayTeamPreviousAwayWins
+        {
+            get { return _awayTeamPreviousAwayWins; }
+            set { _awayTeamPreviousAwayWins = value; }
+        }
+
+        public int AwayTeamPreviousAwayDraws
+        {
+            get { return _awayTeamPreviousAwayDraws; }
+            set { _awayTeamPreviousAwayDraws = value; }
+        }
+
+
+        public int AwayTeamPreviousAwayLosses
+        {
+            get { return _awayTeamPreviousAwayLosses; }
+            set { _awayTeamPreviousAwayLosses = value; }
+        }
+
+
+        public int AwayTeamPreviousAwayGoalsConceded
+        {
+            get { return _awayTeamPreviousAwayGoalsConceded; }
+            set { _awayTeamPreviousAwayGoalsConceded = value; }
+        }
+
+        public int AwayTeamPreviousAwayGoalsScored
+        {
+            get { return _awayTeamPreviousAwayGoalsScored; }
+            set { _awayTeamPreviousAwayGoalsScored = value; }
+        } 
 
         #endregion
 
