@@ -934,6 +934,186 @@ namespace MLC
         }
 
 
+        #region New Statistics
+
+
+        public static SoccerData GetNewStatisticsForHomeTeam(List<SoccerData> soccerDataList, SoccerData soccerData)
+        {
+            int homeTeamPreviousHomeWins = 0;
+            int homeTeamPreviousHomeDraws = 0;
+            int homeTeamPreviousHomeLosses = 0;
+            int homeTeamPreviousHomeGoalsScored = 0;
+            int homeTeamPreviousHomeGoalsConceded = 0;
+
+            int homeTeamPreviousAwayWins = 0;
+            int homeTeamPreviousAwayDraws = 0;
+            int homeTeamPreviousAwayLosses = 0;
+            int homeTeamPreviousAwayGoalsScored = 0;
+            int homeTeamPreviousAwayGoalsConceded = 0;
+
+            bool returnRecentFormAmount = false;
+            List<SoccerData> allPreviousHomeSoccerFixtures = Utility.GetHomeFixturesBeforeSpecifiedPoint(soccerDataList, soccerData.Date, soccerData.HomeTeam, returnRecentFormAmount);      
+            List<SoccerData> allPreviousAwaySoccerFixtures = Utility.GetAwayFixturesBeforeSpecifiedPoint(soccerDataList, soccerData.Date, soccerData.HomeTeam, returnRecentFormAmount);  
+
+            //Calculate the # previous matches played
+            soccerData.HomeTeamPeviousMatchesPlayed = allPreviousHomeSoccerFixtures.Count + allPreviousAwaySoccerFixtures.Count;
+
+            //PROCESS HOME FIXTURES
+            if (allPreviousHomeSoccerFixtures.Count > 0)
+            {
+                foreach (SoccerData previousSoccerData in allPreviousHomeSoccerFixtures)
+                {
+                    if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.H))
+                    {
+                        homeTeamPreviousHomeWins++;
+                    }
+                    else if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.D))
+                    {
+                        homeTeamPreviousHomeDraws++; 
+                    }
+                    else if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.A))
+                    {
+                        homeTeamPreviousHomeLosses++;
+                    }
+
+                    homeTeamPreviousHomeGoalsScored += int.Parse(previousSoccerData.FullTimeHomeTeamGoals);
+                    homeTeamPreviousHomeGoalsConceded += int.Parse(previousSoccerData.FullTimeAwayTeamGoals);    
+                }
+
+                soccerData.HomeTeamPreviousHomeWins = homeTeamPreviousHomeWins;
+                soccerData.HomeTeamPreviousHomeDraws = homeTeamPreviousHomeDraws;
+                soccerData.HomeTeamPreviousHomeLosses = homeTeamPreviousHomeLosses;
+                soccerData.HomeTeamPreviousHomeGoalsScored = homeTeamPreviousHomeGoalsScored;
+                soccerData.HomeTeamPreviousHomeGoalsConceded = homeTeamPreviousHomeGoalsConceded;  
+            }
+
+
+            //PROCESS AWAY FIXTURES
+            if (allPreviousAwaySoccerFixtures.Count > 0)
+            {
+                foreach (SoccerData previousSoccerData in allPreviousAwaySoccerFixtures)
+                {
+                    if(previousSoccerData.FullTimeResult.Equals(SoccerDataResults.H))
+                    {
+                        homeTeamPreviousAwayLosses++;
+                    }
+                    else if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.D))
+                    {
+                        homeTeamPreviousAwayDraws++;
+                    }
+                    else if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.A))
+                    {
+                        homeTeamPreviousAwayWins++;
+                    }
+
+                    homeTeamPreviousAwayGoalsScored += int.Parse(soccerData.FullTimeAwayTeamGoals);
+                    homeTeamPreviousAwayGoalsConceded += int.Parse(soccerData.FullTimeHomeTeamGoals);  
+                }
+
+                soccerData.HomeTeamPreviousAwayWins = homeTeamPreviousAwayWins;
+                soccerData.HomeTeamPreviousAwayDraws = homeTeamPreviousAwayDraws;
+                soccerData.HomeTeamPreviousAwayLosses = homeTeamPreviousAwayLosses;
+                soccerData.HomeTeamPreviousAwayGoalsScored = homeTeamPreviousAwayGoalsScored;
+                soccerData.HomeTeamPreviousAwayGoalsConceded = homeTeamPreviousAwayGoalsConceded; 
+
+            }
+
+            return soccerData;
+
+        }
+
+
+        public static SoccerData GetNewStatisticsForAwayTeam(List<SoccerData> soccerDataList, SoccerData soccerData)
+        {
+            int awayTeamPreviousHomeWins = 0;
+            int awayTeamPreviousHomeDraws = 0;
+            int awayTeamPreviousHomeLosses = 0;
+            int awayTeamPreviousHomeGoalsScored = 0;
+            int awayTeamPreviousHomeGoalsConceded = 0;
+
+            int awayTeamPreviousAwayWins = 0;
+            int awayTeamPreviousAwayDraws = 0;
+            int awayTeamPreviousAwayLosses = 0;
+            int awayTeamPreviousAwayGoalsScored = 0;
+            int awayTeamPreviousAwayGoalsConceded = 0;
+
+
+            bool returnRecentFormAmount = false;
+            List<SoccerData> allPreviousHomeSoccerFixtures = Utility.GetHomeFixturesBeforeSpecifiedPoint(soccerDataList, soccerData.Date, soccerData.AwayTeam, returnRecentFormAmount);
+            List<SoccerData> allPreviousAwaySoccerFixtures = Utility.GetAwayFixturesBeforeSpecifiedPoint(soccerDataList, soccerData.Date, soccerData.AwayTeam, returnRecentFormAmount);
+
+            //Calculate the # previous matches played
+            soccerData.HomeTeamPeviousMatchesPlayed = allPreviousHomeSoccerFixtures.Count + allPreviousAwaySoccerFixtures.Count;
+
+            //PROCESS HOME FIXTURES
+            if (allPreviousHomeSoccerFixtures.Count > 0)
+            {
+                foreach (SoccerData previousSoccerData in allPreviousHomeSoccerFixtures)
+                {
+                    if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.H))
+                    {
+                        awayTeamPreviousHomeWins++;
+                    }
+                    else if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.D))
+                    {
+                        awayTeamPreviousHomeDraws++;
+                    }
+                    else if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.A))
+                    {
+                        awayTeamPreviousHomeLosses++;
+                    }
+
+                    awayTeamPreviousHomeGoalsScored += int.Parse(previousSoccerData.FullTimeHomeTeamGoals);
+                    awayTeamPreviousHomeGoalsConceded += int.Parse(previousSoccerData.FullTimeAwayTeamGoals);
+                }
+
+                soccerData.AwayTeamPreviousHomeWins = awayTeamPreviousHomeWins;
+                soccerData.AwayTeamPreviousHomeDraws = awayTeamPreviousHomeDraws;
+                soccerData.AwayTeamPreviousHomeLosses = awayTeamPreviousHomeLosses;
+                soccerData.AwayTeamPreviousHomeGoalsScored = awayTeamPreviousHomeGoalsScored;
+                soccerData.AwayTeamPreviousHomeGoalsConceded = awayTeamPreviousHomeGoalsConceded; 
+            }
+
+
+            //PROCESS AWAY FIXTURES
+            if (allPreviousHomeSoccerFixtures.Count > 0)
+            {
+                foreach (SoccerData previousSoccerData in allPreviousAwaySoccerFixtures)
+                {
+                    if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.H))
+                    {
+                        awayTeamPreviousAwayLosses++; 
+                    }
+                    else if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.D))
+                    {
+                        awayTeamPreviousAwayDraws++;
+                    }
+                    else if (previousSoccerData.FullTimeResult.Equals(SoccerDataResults.A))
+                    {
+                        awayTeamPreviousAwayWins++;
+                    }
+
+                    awayTeamPreviousAwayGoalsScored += int.Parse(previousSoccerData.FullTimeAwayTeamGoals);
+                    awayTeamPreviousAwayGoalsConceded += int.Parse(previousSoccerData.FullTimeHomeTeamGoals);
+                }
+
+                soccerData.AwayTeamPreviousAwayWins = awayTeamPreviousAwayWins;
+                soccerData.AwayTeamPreviousAwayDraws = awayTeamPreviousAwayDraws;
+                soccerData.AwayTeamPreviousAwayLosses = awayTeamPreviousAwayLosses;
+                soccerData.AwayTeamPreviousAwayGoalsScored = awayTeamPreviousAwayGoalsScored;
+                soccerData.AwayTeamPreviousAwayGoalsConceded = awayTeamPreviousAwayGoalsConceded; 
+            }
+
+
+
+            return soccerData;
+
+        }
+
+        #endregion
+
+
+
         #region League Score Stuff
 
 
@@ -1168,6 +1348,53 @@ namespace MLC
                 return SortAndTakeRecentFormAmount(earlierSoccerData);            
             else
                 return earlierSoccerData; 
+        }
+
+
+        private static List<SoccerData> GetHomeFixturesBeforeSpecifiedPoint(List<SoccerData> soccerDataOrderedList, DateTime dt, string teamName, bool returnRecentFormAmount)
+        {
+            List<SoccerData> earlierSoccerData = new List<SoccerData>();
+
+            //Get all fixture before the specified time period
+            foreach (SoccerData soccerData in soccerDataOrderedList)
+            {
+                DateTime dateTime = soccerData.Date;
+
+                if (Compare2Dates(dateTime, dt))
+                {
+                    if (soccerData.HomeTeam == teamName)
+                        earlierSoccerData.Add(soccerData);
+                }
+            }
+
+            if (returnRecentFormAmount & earlierSoccerData.Count > RECENT_FORM)
+                return SortAndTakeRecentFormAmount(earlierSoccerData);
+            else
+                return earlierSoccerData; 
+
+        }
+
+        private static List<SoccerData> GetAwayFixturesBeforeSpecifiedPoint(List<SoccerData> soccerDataOrderedList, DateTime dt, string teamName, bool returnRecentFormAmount)
+        {
+            List<SoccerData> earlierSoccerData = new List<SoccerData>();
+
+            //Get all fixture before the specified time period
+            foreach (SoccerData soccerData in soccerDataOrderedList)
+            {
+                DateTime dateTime = soccerData.Date;
+
+                if (Compare2Dates(dateTime, dt))
+                {
+                    if (soccerData.AwayTeam == teamName)
+                        earlierSoccerData.Add(soccerData);
+                }
+            }
+
+            if (returnRecentFormAmount & earlierSoccerData.Count > RECENT_FORM)
+                return SortAndTakeRecentFormAmount(earlierSoccerData);
+            else
+                return earlierSoccerData; 
+
         }
 
         /// <summary>
